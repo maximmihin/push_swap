@@ -1,12 +1,12 @@
 NAME = push_swap
 
-HEADER = ft_push_swap.h
+HEADER = push_swap.h
 
 CC = gcc
 
 FLAGS = -Wall -Wextra -Werror
 
-SRC = utils/push_swap_utils.c main.c
+SRC = utils/push_swap_utils.c utils/lst_utils.c main.c
 
 OBJ = $(SRC:%.c= %.o)
 
