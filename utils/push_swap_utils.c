@@ -2,10 +2,24 @@
 #include "../push_swap.h"
 #include <stdio.h>
 
-int sl(ps_list **S, char c)
+ps_node	*ft_nodenew(int content)
 {
-	ps_list *tmp;
-	ps_list *s;
+	ps_node *elem;
+
+	elem = (ps_node *) malloc(sizeof(ps_node));
+	if (!elem)
+		return (NULL);
+	elem->content = content;
+	elem->index = 0;
+	elem->bool_cs = 0;
+	return (elem);
+}
+
+
+int sl(t_list **S, char c)
+{
+	t_list *tmp;
+	t_list *s;
 
 	if (!*S)
 	{
@@ -31,7 +45,7 @@ int sl(ps_list **S, char c)
 	return (0);
 }
 
-int ss(ps_list **A, ps_list **B)
+int ss(t_list **A, t_list **B)
 {
 	sl(A, 'a');
 	sl(B, 'b');
@@ -39,16 +53,16 @@ int ss(ps_list **A, ps_list **B)
 	return (0);
 }
 
-int rl(ps_list **S, char c)
+int rl(t_list **S, char c)
 {
-	ps_list *last;
-	ps_list *tmp;
-	ps_list *s;
+	t_list *last;
+	t_list *tmp;
+	t_list *s;
 
 	s = *S;
 
 	tmp	= s->next;
-	last = ft_ps_lstlast(*S);
+	last = ft_lstlast(*S);
 	s->next = NULL;
 	last->next = *S;
 	*S = tmp;
@@ -64,7 +78,7 @@ int rl(ps_list **S, char c)
 	return (0);
 }
 
-int rr(ps_list **A, ps_list **B)
+int rr(t_list **A, t_list **B)
 {
 	rl(A, 'a');
 	rl(B, 'b');
@@ -72,16 +86,14 @@ int rr(ps_list **A, ps_list **B)
 	return (0);
 }
 
-int rrl(ps_list **S, char c)
+int rrl(t_list **S, char c)
 {
-	ps_list *tmp;
-	ps_list *s;
+	t_list *tmp;
 
-	s = *S;
 	tmp = *S;
 	while(tmp->next->next)
 		tmp = tmp->next;
-	ft_ps_lstadd_front(S, tmp->next);
+	ft_lstadd_front(S, tmp->next);
 	tmp->next = NULL;
 
 	if (c == 88)
@@ -97,7 +109,7 @@ int rrl(ps_list **S, char c)
 	return (0);
 }
 
-int rrr(ps_list **A, ps_list **B)
+int rrr(t_list **A, t_list **B)
 {
 	rrl(A, 'a');
 	rrl(B, 'b');
@@ -105,14 +117,14 @@ int rrr(ps_list **A, ps_list **B)
 	return (0);
 }
 
-int pl(ps_list **A, ps_list **B, char c)
+int pl(t_list **A, t_list **B, char c)
 {
-	ps_list *tmp;
-	ps_list *b;
+	t_list *tmp;
+	t_list *b;
 
 	b = *B;
 	tmp = b->next;
-	ft_ps_lstadd_front(A, b);
+	ft_lstadd_front(A, b);
 	*B = tmp;
 
 	if (c == 88)

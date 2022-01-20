@@ -1,55 +1,89 @@
 #include "push_swap.h"
 
-void print_content_list(ps_list **S)
+void print_content_list(t_list *S)
 {
-	ps_list *tmp;
+	ps_node *ps_tmp;
+
+	while (S)
+	{
+		ps_tmp = S->content;
+		printf("%d ", ps_tmp->content);
+		S = S->next;
+	}
+	printf("\n");
+}
+
+void print_index_list(t_list *S)
+{
+	ps_node *ps_tmp;
+
+	while (S)
+	{
+		ps_tmp = S->content;
+		printf("%d ", ps_tmp->index);
+		S = S->next;
+	}
+	printf("\n");
+}
+
+
+void index_bzero(t_list **S)
+{
+	t_list *tmp;
+	ps_node *ps_tmp;
 
 	tmp = *S;
+
 	while (tmp)
 	{
-		printf("%s ", (char *)tmp->content);
+		ps_tmp = tmp->content;
+		ps_tmp->index = 0;
 		tmp = tmp->next;
 	}
 }
 
-void print_index_list(ps_list **S)
+void make_index(t_list **S)
 {
-	ps_list *tmp;
-
-	tmp = *S;
-	while (tmp)
-	{
-		printf("%d ", tmp->index);
-		tmp = tmp->next;
-	}
-}
-
-void make_index(ps_list **S)
-{
-	ps_list *tmp;
+	t_list *tmp;
+	ps_node *ps_tmp;
+	ps_node *min_node;
+	unsigned int lst_len;
 	int index;
 	int min_num;
 
 	tmp = *S;
 	index = 1;
-	min_num = tmp->content;
+	ps_tmp = tmp->content;
+	min_num = ps_tmp->content;
+	lst_len = ft_lstsize(*S);
 
-	while (tmp)
+	index_bzero(S);
+	printf("BP 1\n");
+	while (lst_len)
 	{
-		if (tmp->content < min_num && tmp->index == 0)
+		while (tmp)
 		{
-			min_num = tmp->content;
-			tmp->index = index;
+			ps_tmp = tmp->content;
+			if (ps_tmp->content <= min_num && ps_tmp->index == 0)
+			{
+				min_node = tmp->content;
+				printf("BP 3\n");
+			}
+			tmp = tmp->next;
+			printf("BP 2\n");
 		}
-		tmp = tmp->next;
+		min_node->index = index;
+		index++;
+		tmp = *S;
+		lst_len--;
+		printf("BP 4\n");
 	}
-
 }
 
 int		main(int argc, char **argv)
 {
-	ps_list *A;
-//	ps_list *B;
+	t_list *A;
+//	t_list *B;
 	int i;
 
 
@@ -59,19 +93,21 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 
-	A = ft_ps_lstnew(ft_atoi(argv[1]));
+	A = ft_lstnew(ft_nodenew(ft_atoi(argv[1])));
 
 	i = 2;
 	while (argv[i])
-		ft_ps_lstadd_back(&A, ft_ps_lstnew(ft_atoi(argv[i++])));
+		ft_lstadd_back(&A, ft_lstnew(ft_nodenew(ft_atoi(argv[i++]))));
 
+	printf("Before index :\n");
+	print_content_list(A);
+	print_index_list(A);
 
-	printf("Before sort :\n");
-	print_content_list(&A);
-	printf("\n");
+	make_index(&A);
 
-	print_index_list(&A);
-	printf("\n");
+	printf("After index :\n");
+	print_content_list(A);
+	print_index_list(A);
 
 	//sort easy (test)
 
@@ -86,36 +122,13 @@ int		main(int argc, char **argv)
 
 
 
-
-
-
-
-
-
-
-
-/*
-	printf("Before : ");
-	B = A;
-	while (B)
-	{
-		printf("%s ", (char *)B->content);
-		B = B->next;
-	}
-
-	s(&A, 'a');
-
-	printf("\nAfter  : ");
-	print_list(&A);
-	printf("\n------------------\n");
-*/
 //sl, rl, rrl tests
 /*
 	printf("Before : ");
-	print_list(&A);
-	rrl(&A, 'a');
+	print_content_list(&A);
+	rl(&A, 'a');
 	printf("\nAfter  : ");
-	print_list(&A);
+	print_content_list(&A);
 	printf("\n");
 */
 //pl tests
