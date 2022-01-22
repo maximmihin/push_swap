@@ -58,48 +58,7 @@ t_list *find_index(t_list **S, unsigned int index)
 	return (NULL);
 }
 
-void f_make_index(t_list **S)
-{
-	t_list *tmp;
-	ps_node *ps_tmp;
-	ps_node *min_node;
-	unsigned int lst_len;
-	int index;
-	int min_num;
-
-	tmp = *S;
-	index = 1;
-	ps_tmp = tmp->content;
-	min_num = ps_tmp->content;
-	lst_len = ft_lstsize(*S);
-
-	index_bzero(S);
-	//printf("BP 1\n");
-	while (lst_len)
-	{
-		while (tmp)
-		{
-			ps_tmp = tmp->content;
-			if (ps_tmp->content <= min_num && ps_tmp->index == 0)
-			{
-				min_node = tmp->content;
-				//printf("BP 3\n");
-			}
-			tmp = tmp->next;
-			//printf("BP 2\n");
-		}
-		min_node->index = index;
-		tmp = find_index(&tmp, 0);
-		min_node = tmp->content;
-		min_num = min_node->content;
-		index++;
-		tmp = *S;
-		lst_len--;
-		//printf("BP 4\n");
-	}
-}
-
-void s_make_index(t_list **S)
+void make_index(t_list **S)
 {
 	t_list			*tmp;
 	ps_node			*ps_tmp;
@@ -163,7 +122,7 @@ int		main(int argc, char **argv)
 	print_content_list(A);
 	print_index_list(A);
 
-	s_make_index(&A);
+	make_index(&A);
 
 	printf("After index :\n");
 	print_content_list(A);
