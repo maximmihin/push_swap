@@ -10,7 +10,7 @@ typedef struct ps_node
 {
 	int				content;
 	unsigned int 	index;
-	char			bool_cs;
+	char			mark;
 }	ps_node;
 
 ps_node	*ft_nodenew(int content);

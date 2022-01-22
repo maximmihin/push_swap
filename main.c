@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-void print_content_list(t_list *S)
+void	print_content_list(t_list *S)
 {
 	ps_node *ps_tmp;
 
@@ -13,7 +13,7 @@ void print_content_list(t_list *S)
 	printf("\n");
 }
 
-void print_index_list(t_list *S)
+void	print_index_list(t_list *S)
 {
 	ps_node *ps_tmp;
 
@@ -21,6 +21,19 @@ void print_index_list(t_list *S)
 	{
 		ps_tmp = S->content;
 		printf("%d ", ps_tmp->index);
+		S = S->next;
+	}
+	printf("\n");
+}
+
+void	print_mark_list(t_list *S)
+{
+	ps_node *ps_tmp;
+
+	while (S)
+	{
+		ps_tmp = S->content;
+		printf("%c ", ps_tmp->mark);
 		S = S->next;
 	}
 	printf("\n");
@@ -58,45 +71,136 @@ t_list *find_index(t_list **S, unsigned int index)
 	return (NULL);
 }
 
-void make_index(t_list **S)
+ps_node *get_node(t_list *S)
 {
-	t_list			*tmp;
-	ps_node			*ps_tmp;
-	ps_node			*min_node;
-	unsigned int	lenlst;
-	unsigned int	index;
-	int				min_num;
+	ps_node *node;
+
+	node = S->content;
+	return (node);
+}
+
+t_list *find_min_list(t_list *A, t_list *B)
+{
+	ps_node	*ps_A;
+	ps_node	*ps_B;
+
+	ps_A = get_node(A);
+	ps_B = get_node(B);
+	if (ps_A->index)
+		return (B);
+	if (ps_B->index)
+		return (A);
+	if (ps_A->content < ps_B->content)
+		return (A);
+	else
+		return (B);
+}
+
+void	assign_index(t_list **S, unsigned int index)
+{
+	ps_node *tmp;
+
+	tmp = get_node(*S);
+	tmp->index = index;
+}
+
+void	print_node_index(t_list *S)
+{
+	ps_node *node;
+
+	node = get_node(S);
+	printf("node index = %d\n", node->index);
+}
+
+void	make_index(t_list **S)
+{
+	t_list *tmp;
+	t_list *min_lst;
+	unsigned int lst_len;
+	unsigned int index;
 
 	tmp = *S;
-	ps_tmp = tmp->content;
-	lenlst = ft_lstsize(*S);
+	min_lst = tmp;
+	lst_len = ft_lstsize(tmp);
 	index = 1;
-	min_num = ps_tmp->content;
 	index_bzero(S);
-
-	while (lenlst)
+	while (index <= lst_len)
 	{
 		while (tmp)
 		{
-			ps_tmp = tmp->content;
-			if (ps_tmp->content <= min_num && ps_tmp->index == 0)
-			{
-				min_node = ps_tmp;
-				min_num = ps_tmp->content;
-			}
+			min_lst = find_min_list(min_lst, tmp);
 			tmp = tmp->next;
 		}
-		lenlst--;
+		assign_index(&min_lst, index);
+		min_lst = find_index(S, 0);
+		tmp = *S;
+		++index;
+	}
+}
 
-		min_node->index = index;
-		tmp = find_index(S, 0);
+t_list	**make_ind_mark(t_list **S)
+{
+	t_list *tmp;
+	t_list	**mas;
+	int		lst_len;
+	int		i;
+
+	tmp = *S;
+	lst_len = ft_lstsize(tmp);
+
+	mas = (t_list **) malloc(sizeof (t_list *) * lst_len + 1);
+	if (!mas)
+		return (NULL);
+	mas[lst_len] = NULL;
+
+	i = 0;
+	while (mas[i])
+	{
+		mas[i] = tmp;
+		tmp = tmp->next;
+		i++;
+	}
+	return (mas);
+}
+
+int	check_index(t_list *S, unsigned int index)
+{
+	t_list	*tmp;
+	ps_node	*ps_tmp;
+
+	if (S == NULL)
+		return (1);
+	tmp = S;
+	ps_tmp = tmp->content;
+	if (ps_tmp->index == index)
+	{
+		ps_tmp->mark = 'T';
+		return (1);
+	}
+	else
+		return (0);
+}
+
+int	make_mark(t_list **S)
+{
+	t_list			*tmp;
+	t_list			**mark_index;
+	unsigned int	index;
+
+	tmp = *S;
+	mark_index = make_ind_mark(S);
+	if (!mark_index)
+		return (1);
+	index = 1;
+	while (tmp)
+	{
+		while (!check_index(tmp, index) && tmp)
+			tmp = tmp->next;
+		++index;
 		if (!tmp)
 			break;
-		ps_tmp = tmp->content;
-		min_num = ps_tmp->content;
-		tmp = *S;
-		index++;
 	}
+	return (0);
 }
 
 int		main(int argc, char **argv)
@@ -118,34 +222,24 @@ int		main(int argc, char **argv)
 	while (argv[i])
 		ft_lstadd_back(&A, ft_lstnew(ft_nodenew(ft_atoi(argv[i++]))));
 
-	printf("Before index :\n");
+
+	printf("Before mark :\n");
 	print_content_list(A);
-	print_index_list(A);
+	print_mark_list(A);
 
 	make_index(&A);
+	make_mark(&A);
 
-	printf("After index :\n");
+	printf("After mark :\n");
 	print_content_list(A);
-	print_index_list(A);
+	print_mark_list(A);
 
 
-/*
-	B = find_index(&A, 2);
-	ps_node *rrr = B->content;
-	printf("\ncontent = %d\nindex   = %d\n", rrr->content, rrr->index);
-*/
-
-/*
-	index_bzero(&A);
-	printf("After indexbzero :\n");
-	print_content_list(A);
-	print_index_list(A);
-*/
-	//sort easy (test)
 
 
 
 	//make markup (true || false)
+
 
 
 

@@ -11,7 +11,7 @@ ps_node	*ft_nodenew(int content)
 		return (NULL);
 	elem->content = content;
 	elem->index = 0;
-	elem->bool_cs = 0;
+	elem->mark = 'F';
 	return (elem);
 }
 
