@@ -26,4 +26,8 @@ int rrr(t_list **A, t_list **B);
 
 int pl(t_list **A, t_list **B, char c);
 
+int	pa(t_list **A, t_list **B);
+int pb(t_list **A, t_list **B);
+
+
 #endif

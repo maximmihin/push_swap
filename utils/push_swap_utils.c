@@ -123,7 +123,10 @@ int pl(t_list **A, t_list **B, char c)
 	t_list *b;
 
 	b = *B;
-	tmp = b->next;
+	if (b->next)
+		tmp = b->next;
+	else
+		tmp = NULL;
 	ft_lstadd_front(A, b);
 	*B = tmp;
 
@@ -137,5 +140,17 @@ int pl(t_list **A, t_list **B, char c)
 	else
 		ft_putstr_fd("WTF?!", 1);
 */
+	return (0);
+}
+
+int	pa(t_list **A, t_list **B)
+{
+	pl(A, B, 'a');
+	return (0);
+}
+
+int pb(t_list **A, t_list **B)
+{
+	pl(B, A, 'b');
 	return (0);
 }

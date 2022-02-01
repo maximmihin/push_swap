@@ -39,7 +39,7 @@ void	print_mark_list(t_list *S)
 	printf("\n");
 }
 
-void index_bzero(t_list **S)
+void	index_bzero(t_list **S)
 {
 	t_list *tmp;
 	ps_node *ps_tmp;
@@ -54,24 +54,21 @@ void index_bzero(t_list **S)
 	}
 }
 
-t_list *find_index(t_list **S, unsigned int index)
+t_list	*find_index(t_list *S, unsigned int index)
 {
-	t_list *tmp;
 	ps_node *ps_tmp;
 
-	tmp = *S;
-
-	while (tmp)
+	while (S)
 	{
-		ps_tmp = tmp->content;
+		ps_tmp = S->content;
 		if (ps_tmp->index == index)
-			return(tmp);
-		tmp = tmp->next;
+			return(S);
+		S = S->next;
 	}
 	return (NULL);
 }
 
-ps_node *get_node(t_list *S)
+ps_node	*get_node(t_list *S)
 {
 	ps_node *node;
 
@@ -79,7 +76,7 @@ ps_node *get_node(t_list *S)
 	return (node);
 }
 
-t_list *find_min_list(t_list *A, t_list *B)
+t_list	*find_min_list(t_list *A, t_list *B)
 {
 	ps_node	*ps_A;
 	ps_node	*ps_B;
@@ -132,82 +129,401 @@ void	make_index(t_list **S)
 			tmp = tmp->next;
 		}
 		assign_index(&min_lst, index);
-		min_lst = find_index(S, 0);
+		min_lst = find_index(*S, 0);
 		tmp = *S;
 		++index;
 	}
 }
 
-t_list	**make_ind_mark(t_list **S)
+
+
+//MARK
+
+/*
+char	**make_ind_mark(unsigned int lst_len)
 {
-	t_list *tmp;
-	t_list	**mas;
-	int		lst_len;
+	char	**mas;
 	int		i;
 
-	tmp = *S;
-	lst_len = ft_lstsize(tmp);
-
-	mas = (t_list **) malloc(sizeof (t_list *) * lst_len + 1);
+	mas = (char **) malloc(sizeof (char *) * (lst_len + 1));
 	if (!mas)
 		return (NULL);
 	mas[lst_len] = NULL;
-
 	i = 0;
-	while (mas[i])
+	while (lst_len)
 	{
-		mas[i] = tmp;
-		tmp = tmp->next;
-		i++;
+		mas[i] = (char *) malloc(sizeof (char) * 2);
+		if (!mas[i])
+		{
+			free(mas);
+			return (NULL);
+		}
+		++i;
+		--lst_len;
 	}
 	return (mas);
 }
 
-int	check_index(t_list *S, unsigned int index)
+int		check_index(t_list *S, unsigned int index, char *mark_index)
 {
 	t_list	*tmp;
 	ps_node	*ps_tmp;
+	//char	mi_tmp;
 
 	if (S == NULL)
 		return (1);
 	tmp = S;
 	ps_tmp = tmp->content;
+	//mi_tmp = *mark_index;
 	if (ps_tmp->index == index)
 	{
-		ps_tmp->mark = 'T';
+		//mi_tmp = 'T';
+		*mark_index = 'T';
+		printf("T\n");
 		return (1);
 	}
-	else
-		return (0);
+	if (mark_index)
+		*mark_index = 'F';
+	printf("F\n");
+	return (0);
 }
 
-int	make_mark(t_list **S)
+int		make_mark_ad(t_list **S, char ***m_i, int ad)
 {
-	t_list			*tmp;
-	t_list			**mark_index;
 	unsigned int	index;
+	unsigned int	mi_index;
+	t_list			*tmp;
+	char			**mark_index;
 
+	mark_index = *m_i;
 	tmp = *S;
-	mark_index = make_ind_mark(S);
-	if (!mark_index)
-		return (1);
-	index = 1;
+	mi_index = 0;
+	if (ad == 0)
+		index = 1;
+	else
+		index = ft_lstsize(*S);
 	while (tmp)
 	{
-		while (!check_index(tmp, index) && tmp)
+		while (!check_index(tmp, index, &mark_index[mi_index][ad]) && tmp)
+		{
+			mi_index++;
+			//printf("mi_index")
 			tmp = tmp->next;
-		++index;
+		}
+		mi_index++;
 		if (!tmp)
 			break;
+		if (ad == 0)
+			++index;
+		else
+			--index;
 	}
 	return (0);
+}
+
+void	ppprint(char **mas)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	printf("\nppprint :\n");
+	while (mas[i])
+	{
+		printf("%c ", mas[i][j]);
+		i++;
+	}
+	printf("\n");
+}
+*/
+
+
+char	*make_mark_ascending(t_list *S, unsigned int lst_len)
+{
+	char			*arr_mark;
+	ps_node			*tmp;
+	unsigned int	index;
+	unsigned int	j;
+
+	arr_mark = (char *) malloc(sizeof(char) * (lst_len + 1));
+	if (!arr_mark)
+		return (NULL);
+	arr_mark[lst_len] = '\0';
+	index = 1;
+	j = 0;
+	while (S)
+	{
+		tmp = get_node(S);
+		if (tmp->index == index)
+		{
+			arr_mark[j] = 'T';
+			++index;
+		}
+		else
+			arr_mark[j] = 'F';
+		++j;
+		S = S->next;
+	}
+/*
+	int i = 0;
+	printf("ascending\n");
+	while (arr_mark[i])
+	{
+		printf("%c ", arr_mark[i]);
+		i++;
+	}
+	printf("\n");
+*/
+	return (arr_mark);
+}
+
+char	*make_mark_descending(t_list *S, unsigned int lst_len)
+{
+	char			*arr_mark;
+	ps_node			*tmp;
+	unsigned int	j;
+
+	arr_mark = (char *) malloc(sizeof(char) * (lst_len + 1));
+	if (!arr_mark)
+		return (NULL);
+	arr_mark[lst_len] = '\0';
+	j = 0;
+	while (S)
+	{
+		tmp = get_node(S);
+		if (tmp->index == lst_len)
+		{
+			arr_mark[j] = 'T';
+			--lst_len;
+		}
+		else
+			arr_mark[j] = 'F';
+		++j;
+		S = S->next;
+	}
+/*
+	printf("descending\n");
+	int i = 0;
+	while (arr_mark[i])
+	{
+		printf("%c ", arr_mark[i]);
+		i++;
+	}
+	printf("\n");
+*/
+	return (arr_mark);
+}
+
+void	apply_mark(t_list **S, const char *arr)
+{
+	t_list	*t_tmp;
+	ps_node	*node;
+	unsigned int i;
+
+	t_tmp = *S;
+	i = 0;
+	while(t_tmp)
+	{
+		node = get_node(t_tmp);
+		node->mark = arr[i];
+		i++;
+		t_tmp = t_tmp->next;
+	}
+}
+
+int		make_mark(t_list **S)
+{
+	unsigned int 	lst_len;
+	char			**mark_index;
+
+	lst_len = ft_lstsize(*S);
+	mark_index = (char **) malloc(sizeof(char *) * 3);
+	if (!mark_index)
+		return (1);
+	mark_index[2] = NULL;
+
+	mark_index[0] = make_mark_ascending(*S, lst_len);
+	if (!mark_index[0])
+		return (1);
+	mark_index[1] = make_mark_descending(*S, lst_len);
+	if (!mark_index[1])
+		return (1);
+
+	//функция, которая сравнит и выберет лучший вариант (a || d)
+
+	//функция, которая запишет лучший вариант в лист
+	apply_mark(S, mark_index[0]);
+
+	return (0);
+}
+
+
+
+
+int		is_ascending(t_list *S)
+{
+	unsigned int	lst_len;
+	ps_node			*ps_tmp;
+	unsigned int	index_tmp;
+
+	lst_len = ft_lstsize(S);
+
+	ps_tmp = get_node(S);
+	index_tmp = ps_tmp->index;
+	S = S->next;
+
+	while (S)
+	{
+		ps_tmp = get_node(S);
+		if (index_tmp + 1 != ps_tmp->index)
+		{
+			//printf("nope\n");
+			return (0);
+		}
+		index_tmp = ps_tmp->index;
+		S = S->next;
+	}
+	//printf("yep\n");
+	return (1);
+}
+
+int 	is_index(t_list *S, unsigned int index)
+{
+	ps_node	*ps_tmp;
+
+	ps_tmp = get_node(S);
+	if (ps_tmp->index == index)
+		return (1);
+	return (0);
+}
+
+//parser
+
+int		check_num(char **str)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (str[i][j])
+	{
+		while (str[i][j])
+		{
+			if (!(str[i][j] == '-' || ft_isdigit(str[i][j])))
+			{
+				ft_putstr_fd("incorrect input: find liter\n", 1);
+				return (1);
+			}
+			++j;
+		}
+		++i;
+		j = 0;
+	}
+	return (0);
+}
+
+/*
+int		*check_dub(char **str)
+{
+	int *nums;
+	int i;
+	int tmp;
+
+	size_t len_str;
+
+	len_str = ft_strlen((char *)str);
+
+	nums = (int *) malloc(sizeof(int) * (len_str + 1));
+	if (!nums)
+		return (NULL);
+
+	i = 0;
+	while (len_str)
+	{
+		nums[i] = ft_atoi(str[i]);
+		len_str--;
+	}
+
+
+	while ()
+
+
+
+
+
+
+
+	return (nums);
+}
+*/
+
+int		s_check_double(t_list *list)
+{
+	t_list	*t_tmp;
+	ps_node *ps_tmp;
+	int		num;
+
+	while (list)
+	{
+		ps_tmp = get_node(list);
+		num = ps_tmp->content;
+		t_tmp = list->next;
+		while (t_tmp)
+		{
+			ps_tmp = get_node(t_tmp);
+			if (num == ps_tmp->content)
+			{
+				ft_putstr_fd("incorrect input: find double\n", 1);
+				return (1);
+			}
+			t_tmp = t_tmp->next;
+		}
+		list = list->next;
+	}
+	return (0);
+}
+
+t_list	*parser(char **str)
+{
+//	t_list *stack;
+//	size_t num_str;
+	t_list	*list;
+	int		letter;
+	int		doub;
+	size_t	i;
+
+	///не числовые значения (слова)
+	letter = check_num(str);
+	if (letter)
+		return (NULL);
+
+	list = ft_lstnew(ft_nodenew(ft_atoi(str[1])));
+	i = 2;
+	while (str[i])
+		ft_lstadd_back(&list, ft_lstnew(ft_nodenew(ft_atoi(str[i++]))));
+
+	///повторы
+
+	doub = s_check_double(list);
+	if (doub)
+	{
+		//удалить весь лист
+		return (NULL);
+	}
+
+
+
+	return (list);
+
 }
 
 int		main(int argc, char **argv)
 {
 	t_list *A;
-//	t_list *B;
-	int i;
+	t_list *B;
+	int u;
 
 
 	if (argc == 1)
@@ -216,34 +532,60 @@ int		main(int argc, char **argv)
 		return (0);
 	}
 
-	A = ft_lstnew(ft_nodenew(ft_atoi(argv[1])));
-
-	i = 2;
-	while (argv[i])
-		ft_lstadd_back(&A, ft_lstnew(ft_nodenew(ft_atoi(argv[i++]))));
 
 
+	A = parser(argv);
+	if (!A)
+	{
+		return (0);
+	}
+
+/*
 	printf("Before mark :\n");
 	print_content_list(A);
 	print_mark_list(A);
-
+*/
 	make_index(&A);
 	make_mark(&A);
-
+/*
 	printf("After mark :\n");
 	print_content_list(A);
 	print_mark_list(A);
 
+	printf("-----------------\n");
+*/
 
+	int index = 1;
+	int move = 0;
+	while (!is_ascending(A))
+	{
+		if (is_index(A, index))
+		{
+			pb(&A, &B);
+			move++;
+			index++;
+		}
+		else
+		{
+			rl(&A, 'a');
+			move++;
+		}
+	}
 
+	while (B)
+	{
+		pa(&A, &B);
+		move++;
+	}
 
+//	printf("= %d\n", ft_lstsize(B));
 
-	//make markup (true || false)
+	printf("After algoritm :\n");
+	print_content_list(A);
+	print_mark_list(A);
 
-
-
-
-
+	printf("-----------------\n");
+	printf("move = %d\n", move);
 
 
 
