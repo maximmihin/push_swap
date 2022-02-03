@@ -400,22 +400,19 @@ int 	is_index(t_list *S, unsigned int index)
 
 //parser
 
-int		check_num(char **str)
+int		check_non_numeric_symbols(char **str)
 {
 	size_t	i;
 	size_t	j;
 
-	i = 0;
+	i = 1;
 	j = 0;
-	while (str[i][j])
+	while (str[i] && str[i][j])
 	{
 		while (str[i][j])
 		{
 			if (!(str[i][j] == '-' || ft_isdigit(str[i][j])))
-			{
-				ft_putstr_fd("incorrect input: find liter\n", 1);
 				return (1);
-			}
 			++j;
 		}
 		++i;
@@ -424,41 +421,45 @@ int		check_num(char **str)
 	return (0);
 }
 
-/*
-int		*check_dub(char **str)
+size_t	ft_arrlen(char **arr)
 {
-	int *nums;
-	int i;
-	int tmp;
-
-	size_t len_str;
-
-	len_str = ft_strlen((char *)str);
-
-	nums = (int *) malloc(sizeof(int) * (len_str + 1));
-	if (!nums)
-		return (NULL);
+	size_t i;
 
 	i = 0;
-	while (len_str)
-	{
-		nums[i] = ft_atoi(str[i]);
-		len_str--;
-	}
-
-
-	while ()
-
-
-
-
-
-
-
-	return (nums);
+	while (arr[i])
+		i++;
+	return (i);
 }
-*/
 
+int		check_double(char **str)
+{
+	size_t len_arr;
+	size_t *nums;
+	int i;
+	size_t j;
+
+	len_arr = ft_arrlen(str);
+	nums = (size_t *) malloc(sizeof(size_t) * (len_arr + 1));
+	if (!nums)
+		return (1);
+	i = -1;
+	while (++i < (int)len_arr)
+		nums[i] = ft_strlen(str[i]);
+	i = 0;
+	j = 0;
+	while (i < (int)len_arr)
+	{
+		while (++j < len_arr)
+			if (nums[i] == nums[j] && !(ft_strncmp(str[i], str[j], nums[i])))
+				return (1);
+		i++;
+		j = i;
+	}
+	free(nums);
+	return (0);
+}
+
+/*
 int		s_check_double(t_list *list)
 {
 	t_list	*t_tmp;
@@ -474,56 +475,51 @@ int		s_check_double(t_list *list)
 		{
 			ps_tmp = get_node(t_tmp);
 			if (num == ps_tmp->content)
-			{
-				ft_putstr_fd("incorrect input: find double\n", 1);
 				return (1);
-			}
 			t_tmp = t_tmp->next;
 		}
 		list = list->next;
 	}
 	return (0);
 }
-
+*/
 t_list	*parser(char **str)
 {
-//	t_list *stack;
-//	size_t num_str;
 	t_list	*list;
 	int		letter;
 	int		doub;
 	size_t	i;
 
 	///не числовые значения (слова)
-	letter = check_num(str);
+	letter = check_non_numeric_symbols(str);
 	if (letter)
+	{
+		printf("find non-numeric symbols\n");
 		return (NULL);
+	}
 
+	///повторы
+	doub = check_double(str);
+	if (doub)
+	{
+		printf("find doubles\n");
+		return (NULL);
+	}
+
+	///make list
 	list = ft_lstnew(ft_nodenew(ft_atoi(str[1])));
 	i = 2;
 	while (str[i])
 		ft_lstadd_back(&list, ft_lstnew(ft_nodenew(ft_atoi(str[i++]))));
 
-	///повторы
-
-	doub = s_check_double(list);
-	if (doub)
-	{
-		//удалить весь лист
-		return (NULL);
-	}
-
-
-
 	return (list);
-
 }
 
 int		main(int argc, char **argv)
 {
 	t_list *A;
 	t_list *B;
-	int u;
+//	int u;
 
 
 	if (argc == 1)
@@ -536,24 +532,23 @@ int		main(int argc, char **argv)
 
 	A = parser(argv);
 	if (!A)
-	{
 		return (0);
-	}
 
-/*
+	printf("-----------------\n");
+
 	printf("Before mark :\n");
 	print_content_list(A);
 	print_mark_list(A);
-*/
+
 	make_index(&A);
 	make_mark(&A);
-/*
+
 	printf("After mark :\n");
 	print_content_list(A);
 	print_mark_list(A);
 
 	printf("-----------------\n");
-*/
+
 
 	int index = 1;
 	int move = 0;
