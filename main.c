@@ -486,21 +486,15 @@ int		s_check_double(t_list *list)
 t_list	*parser(char **str)
 {
 	t_list	*list;
-	int		letter;
-	int		doub;
 	size_t	i;
 
-	///не числовые значения (слова)
-	letter = check_non_numeric_symbols(str);
-	if (letter)
+	if (check_non_numeric_symbols(str))
 	{
 		printf("find non-numeric symbols\n");
 		return (NULL);
 	}
 
-	///повторы
-	doub = check_double(str);
-	if (doub)
+	if (check_double(str))
 	{
 		printf("find doubles\n");
 		return (NULL);
