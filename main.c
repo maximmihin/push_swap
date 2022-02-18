@@ -363,42 +363,45 @@ int		make_mark(t_list **S)
 
 int		is_ascending(t_list *S)
 {
-	unsigned int	lst_len;
 	ps_node			*ps_tmp;
 	unsigned int	index_tmp;
 
-	lst_len = ft_lstsize(S);
-
-	ps_tmp = get_node(S);
+	ps_tmp = (ps_node *)S->content;
 	index_tmp = ps_tmp->index;
 	S = S->next;
 
 	while (S)
 	{
-		ps_tmp = get_node(S);
+		ps_tmp = (ps_node *)S->content;
 		if (index_tmp + 1 != ps_tmp->index)
-		{
-			//printf("nope\n");
 			return (0);
-		}
 		index_tmp = ps_tmp->index;
 		S = S->next;
 	}
-	//printf("yep\n");
 	return (1);
 }
 
-int 	is_index(t_list *S, unsigned int index)
+unsigned int	len_descending(t_list *S)
 {
-	ps_node	*ps_tmp;
+	ps_node			*ps_tmp;
+	unsigned int	index_tmp;
+	unsigned int	len;
 
-	ps_tmp = get_node(S);
-	if (ps_tmp->index == index)
-		return (1);
-	return (0);
+	index_tmp = ft_lstsize(S);
+	len = 0;
+	S = S->next;
+
+	while (S)
+	{
+		ps_tmp = (ps_node *)S->content;
+		if (index_tmp - 1 != ps_tmp->index)
+			return (0);
+		index_tmp = ps_tmp->index;
+		S = S->next;
+		len++;
+	}
+	return (len);
 }
-
-//parser
 
 int		check_non_numeric_symbols(char **str)
 {
@@ -544,11 +547,16 @@ int		main(int argc, char **argv)
 	printf("-----------------\n");
 
 
-	int index = 1;
+
+
+
+
+	unsigned int index = 1;
+	unsigned int descending_series = 0;
 	int move = 0;
 	while (!is_ascending(A))
 	{
-		if (is_index(A, index))
+		if (((ps_node *)A->content)->index == index)
 		{
 			pb(&A, &B);
 			move++;
@@ -566,6 +574,10 @@ int		main(int argc, char **argv)
 		pa(&A, &B);
 		move++;
 	}
+ //easiest algoritm
+
+
+
 
 //	printf("= %d\n", ft_lstsize(B));
 
