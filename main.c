@@ -512,6 +512,35 @@ t_list	*parser(char **str)
 	return (list);
 }
 
+unsigned int	find_cost(unsigned int index, t_list *S)
+{
+	unsigned int	pos;
+	unsigned int	med_S;
+	unsigned int	tmp;
+
+	pos = 1;
+
+	while (S)
+	{
+		if (((ps_node *)S->content)->index == index)
+			break;
+		S = S->next;
+		pos++;
+	}
+
+	tmp = ft_lstsize(S);
+	med_S = tmp;
+	if (tmp % 2)
+		med_S++;
+
+	if (pos <= med_S)
+		return (pos - 1);
+	return (tmp - pos + 1);
+
+
+	return (0);
+}
+
 int		main(int argc, char **argv)
 {
 	t_list *A;
@@ -530,7 +559,7 @@ int		main(int argc, char **argv)
 	A = parser(argv);
 	if (!A)
 		return (0);
-
+/*
 	printf("-----------------\n");
 
 	printf("Before mark :\n");
@@ -545,12 +574,11 @@ int		main(int argc, char **argv)
 	print_mark_list(A);
 
 	printf("-----------------\n");
+*/
 
 
 
-
-
-
+/*
 	unsigned int index = 1;
 	unsigned int descending_series = 0;
 	int move = 0;
@@ -574,19 +602,68 @@ int		main(int argc, char **argv)
 		pa(&A, &B);
 		move++;
 	}
- //easiest algoritm
+*/ //easiest algoritm
+
+	///сделать подсчёт действий в функции
+
+	key_points	k_p;
+	unsigned int med_A;
+
+	k_p.min_index = 1;
+	k_p.max_index = ft_lstsize(A);
+	med_A = k_p.max_index;
+
+
+	while (ft_lstsize(A) > 2)
+	{
+
+		if (k_p.min_cost <= k_p.max_cost)
+		{
+			k_p.min_index++;
+			while (k_p.min_cost)
+			{
+				ra(&A);
+				k_p.min_cost--;
+			}
+			pb(&A, &B);
+			k_p.min_cost = find_cost(k_p.min_index, A);
+		}
+		else
+		{
+			k_p.max_index--;
+			while (k_p.max_cost)
+			{
+				rra(&A);
+				k_p.max_cost--;
+			}
+			pb(&A, &B);
+			k_p.max_cost = find_cost(k_p.max_index, A);
+		}
+	}
+
+	if (((ps_node *)A->content)->index < ((ps_node *)A->next->content)->index)
+		sa(&A);
+
+	while (B)
+	{
+		pa(&A, &B);
+		if (((ps_node *)A->content)->index > med_A)
+			ra(&A);
+	}
+
 
 
 
 
 //	printf("= %d\n", ft_lstsize(B));
-
+/*
 	printf("After algoritm :\n");
 	print_content_list(A);
 	print_mark_list(A);
 
 	printf("-----------------\n");
-	printf("move = %d\n", move);
+*/
+//	printf("move = %d\n", move);
 
 
 

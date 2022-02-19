@@ -15,7 +15,6 @@ ps_node	*ft_nodenew(int content)
 	return (elem);
 }
 
-
 int sl(t_list **S, char c)
 {
 	t_list *tmp;
@@ -42,6 +41,18 @@ int sl(t_list **S, char c)
 	ft_putchar_fd(c, 1);
 	ft_putchar_fd('\n', 1);
 */
+	return (0);
+}
+
+int sa(t_list **S)
+{
+	sl(S, 'a');
+	return (0);
+}
+
+int sb(t_list **S)
+{
+	sl(S, 'b');
 	return (0);
 }
 
@@ -78,6 +89,18 @@ int rl(t_list **S, char c)
 	return (0);
 }
 
+int ra(t_list **S)
+{
+	rl(S, 'a');
+	return (0);
+}
+
+int rb(t_list **S)
+{
+	rl(S, 'b');
+	return (0);
+}
+
 int rr(t_list **A, t_list **B)
 {
 	rl(A, 'a');
@@ -106,6 +129,18 @@ int rrl(t_list **S, char c)
 */
 
 
+	return (0);
+}
+
+int rra(t_list **S)
+{
+	rrl(S, 'a');
+	return (0);
+}
+
+int rrb(t_list **S)
+{
+	rrl(S, 'b');
 	return (0);
 }
 
