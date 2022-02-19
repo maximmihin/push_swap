@@ -24,22 +24,17 @@ typedef struct key_points
 
 ps_node	*ft_nodenew(int content);
 
-int sl(t_list **S, char c);
 int sa(t_list **S);
 int sb(t_list **S);
 int ss(t_list **A, t_list **B);
 
-int rl(t_list **S, char c);
 int ra(t_list **S);
 int rb(t_list **S);
 int rr(t_list **A, t_list **B);
 
-int rrl(t_list **S, char c);
 int rra(t_list **S);
 int rrb(t_list **S);
 int rrr(t_list **A, t_list **B);
-
-int pl(t_list **A, t_list **B, char c);
 
 int	pa(t_list **A, t_list **B);
 int pb(t_list **A, t_list **B);

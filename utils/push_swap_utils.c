@@ -15,7 +15,7 @@ ps_node	*ft_nodenew(int content)
 	return (elem);
 }
 
-int sl(t_list **S, char c)
+int sl(t_list **S)
 {
 	t_list *tmp;
 	t_list *s;
@@ -26,7 +26,6 @@ int sl(t_list **S, char c)
 		return (1);
 	}
 
-
 	s = *S;
 
 	tmp = s->next->next;
@@ -34,37 +33,32 @@ int sl(t_list **S, char c)
 	*S = s->next;
 	s->next = tmp;
 
-	if (c == 88)
-		ft_putchar_fd('r', 1);
-/*
-	ft_putchar_fd('s', 1);
-	ft_putchar_fd(c, 1);
-	ft_putchar_fd('\n', 1);
-*/
 	return (0);
 }
 
 int sa(t_list **S)
 {
-	sl(S, 'a');
+	sl(S);
+	write(1, "sa\n", 3);
 	return (0);
 }
 
 int sb(t_list **S)
 {
-	sl(S, 'b');
+	sl(S);
+	write(1, "sb\n", 3);
 	return (0);
 }
 
 int ss(t_list **A, t_list **B)
 {
-	sl(A, 'a');
-	sl(B, 'b');
-
+	sl(A);
+	sl(B);
+	write(1, "ss\n", 3);
 	return (0);
 }
 
-int rl(t_list **S, char c)
+int rl(t_list **S)
 {
 	t_list *last;
 	t_list *tmp;
@@ -78,38 +72,32 @@ int rl(t_list **S, char c)
 	last->next = *S;
 	*S = tmp;
 
-	if (c == 88)
-		ft_putchar_fd('r', 1);
-
-/*
-	ft_putchar_fd('r', 1);
-	ft_putchar_fd(c, 1);
-	ft_putchar_fd('\n', 1);
-*/
 	return (0);
 }
 
 int ra(t_list **S)
 {
-	rl(S, 'a');
+	rl(S);
+	write(1, "ra\n", 3);
 	return (0);
 }
 
 int rb(t_list **S)
 {
-	rl(S, 'b');
+	rl(S);
+	write(1, "rb\n", 3);
 	return (0);
 }
 
 int rr(t_list **A, t_list **B)
 {
-	rl(A, 'a');
-	rl(B, 'b');
-
+	rl(A);
+	rl(B);
+	write(1, "rr\n", 3);
 	return (0);
 }
 
-int rrl(t_list **S, char c)
+int rrl(t_list **S)
 {
 	t_list *tmp;
 
@@ -119,40 +107,32 @@ int rrl(t_list **S, char c)
 	ft_lstadd_front(S, tmp->next);
 	tmp->next = NULL;
 
-	if (c == 88)
-		ft_putchar_fd('r', 1);
-/*
-	ft_putchar_fd('r', 1);
-	ft_putchar_fd('r', 1);
-	ft_putchar_fd(c, 1);
-	ft_putchar_fd('\n', 1);
-*/
-
-
 	return (0);
 }
 
 int rra(t_list **S)
 {
-	rrl(S, 'a');
+	rrl(S);
+	write(1, "rra\n", 4);
 	return (0);
 }
 
 int rrb(t_list **S)
 {
-	rrl(S, 'b');
+	rrl(S);
+	write(1, "rrb\n", 4);
 	return (0);
 }
 
 int rrr(t_list **A, t_list **B)
 {
-	rrl(A, 'a');
-	rrl(B, 'b');
-
+	rrl(A);
+	rrl(B);
+	write(1, "rrr\n", 4);
 	return (0);
 }
 
-int pl(t_list **A, t_list **B, char c)
+int pl(t_list **A, t_list **B)
 {
 	t_list *tmp;
 	t_list *b;
@@ -165,27 +145,19 @@ int pl(t_list **A, t_list **B, char c)
 	ft_lstadd_front(A, b);
 	*B = tmp;
 
-	if (c == 88)
-		ft_putchar_fd('r', 1);
-/*
-	if (c == 'a')
-		ft_putstr_fd("pa\n", 1);
-	else if (c == 'b')
-		ft_putstr_fd("pb\n", 1);
-	else
-		ft_putstr_fd("WTF?!", 1);
-*/
 	return (0);
 }
 
 int	pa(t_list **A, t_list **B)
 {
-	pl(A, B, 'a');
+	pl(A, B);
+	write(1, "pa\n", 3);
 	return (0);
 }
 
 int pb(t_list **A, t_list **B)
 {
-	pl(B, A, 'b');
+	pl(B, A);
+	write(1, "pb\n", 3);
 	return (0);
 }

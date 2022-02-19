@@ -536,9 +536,6 @@ unsigned int	find_cost(unsigned int index, t_list *S)
 	if (pos <= med_S)
 		return (pos - 1);
 	return (tmp - pos + 1);
-
-
-	return (0);
 }
 
 int		main(int argc, char **argv)
@@ -613,6 +610,7 @@ int		main(int argc, char **argv)
 	k_p.max_index = ft_lstsize(A);
 	med_A = k_p.max_index;
 
+	unsigned int steps = 0;
 
 	while (ft_lstsize(A) > 2)
 	{
@@ -623,9 +621,12 @@ int		main(int argc, char **argv)
 			while (k_p.min_cost)
 			{
 				ra(&A);
+				printf("A\n");
+				steps++;
 				k_p.min_cost--;
 			}
 			pb(&A, &B);
+			steps++;
 			k_p.min_cost = find_cost(k_p.min_index, A);
 		}
 		else
@@ -634,21 +635,31 @@ int		main(int argc, char **argv)
 			while (k_p.max_cost)
 			{
 				rra(&A);
+				steps++;
 				k_p.max_cost--;
 			}
 			pb(&A, &B);
+			steps++;
 			k_p.max_cost = find_cost(k_p.max_index, A);
 		}
 	}
 
 	if (((ps_node *)A->content)->index < ((ps_node *)A->next->content)->index)
+	{
 		sa(&A);
+		steps++;
+	}
 
 	while (B)
 	{
 		pa(&A, &B);
+		steps++;
 		if (((ps_node *)A->content)->index > med_A)
+		{
 			ra(&A);
+			printf("B\n");
+			steps++;
+		}
 	}
 
 
@@ -663,7 +674,7 @@ int		main(int argc, char **argv)
 
 	printf("-----------------\n");
 */
-//	printf("move = %d\n", move);
+	printf("move = %d\n", steps);
 
 
 
