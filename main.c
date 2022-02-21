@@ -562,7 +562,7 @@ int		main(int argc, char **argv)
 
 	printf("-----------------\n");
 */
-	printf("move = %d\n", steps);
+//	printf("move = %d\n", steps);
 
 
 

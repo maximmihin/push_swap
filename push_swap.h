@@ -14,13 +14,14 @@ typedef struct ps_node
 	char			mark;
 }	ps_node;
 
-typedef struct key_points
+typedef struct s_extrema
 {
 	unsigned int	min_index;
 	unsigned int	min_cost;
 	unsigned int	max_index;
 	unsigned int	max_cost;
-}	key_points;
+	char 			top_bottom;
+}	t_extrema;
 
 ps_node	*ft_nodenew(int content);
 

@@ -286,75 +286,86 @@ unsigned int	find_cost(unsigned int index, t_list *S)
 	return (tmp - pos + 1 + 1);
 }
 
+unsigned int	find_low_cost(unsigned int index, t_list *S, )
+{
+
+}
+
+t_extrema	*choose_next_elem(t_list *A, t_list *B, t_extrema *extrema)
+{
+
+}
+
+int fill_stack_a(t_list **A, t_list **B)
+{
+	t_list *tmp_list;
+
+	tmp_list = *A;
+	while (B)
+	{
+		pa(A, B);
+		if (((ps_node *)tmp_list->content)->index
+			> ((ps_node *)tmp_list->next->content)->index)
+		{
+			ra(A);
+			printf("B\n");
+		}
+	}
+	return (0);
+}
+
 int big_sort(t_list **A, t_list **B)
 {
 	///сделать подсчёт действий в функции
-	key_points		k_p;
-	unsigned int	median;
-	unsigned int	A_size;
+	t_extrema		*extrema;
+	unsigned int	a_size;
 	unsigned int	steps;
 
+
+	extrema = (t_extrema *) malloc(sizeof (t_extrema));
+	if (!extrema)
+		return (1);
+
+	a_size = ft_lstsize(*A);
+	extrema->min_index = 1;
+	extrema->max_index = a_size;
+
 	make_index(A);
-	A_size = ft_lstsize(*A);
 
-	k_p.min_index = 1;
-	k_p.max_index = A_size;
-	median = k_p.max_index;
-
-	steps = 0;
-
-	k_p.min_cost = find_cost(k_p.min_index, *A);
-	k_p.max_cost = find_cost(k_p.max_index, *A);
-
-
-	while (A_size > 5)
+	while (a_size > 5)
 	{
-		A_size--;
-		if (k_p.min_cost <= k_p.max_cost)
+		a_size--;
+		extrema->min_cost = find_cost(extrema->min_index, *A);
+		extrema->max_cost = find_cost(extrema->max_index, *A);
+		if (extrema->min_cost <= extrema->max_cost)
 		{
-			k_p.min_index++;
-			while (k_p.min_cost)
+			extrema->min_index++;
+			while (extrema->min_cost)
 			{
 				ra(A);
 				printf("A\n");
 				steps++;
-				k_p.min_cost--;
+				extrema->min_cost--;
 			}
 			pb(A, B);
 			steps++;
-			k_p.min_cost = find_cost(k_p.min_index, *A);
 		}
 		else
 		{
-			k_p.max_index--;
-			while (k_p.max_cost)
+			extrema->max_index--;
+			while (extrema->max_cost)
 			{
 				rra(A);
 				steps++;
-				k_p.max_cost--;
+				extrema->max_cost--;
 			}
 			pb(A, B);
 			steps++;
-			k_p.max_cost = find_cost(k_p.max_index, *A);
 		}
 	}
 
-	if (((ps_node *)A->content)->index < ((ps_node *)A->next->content)->index)
-	{
-		sa(A);
-		steps++;
-	}
+	five_sort(A, B);
+	fill_stack_a(A, B);
 
-	while (B)
-	{
-		pa(A, B);
-		steps++;
-		if (((ps_node *)A->content)->index > median)
-		{
-			ra(A);
-			printf("B\n");
-			steps++;
-		}
-	}
 }
 
