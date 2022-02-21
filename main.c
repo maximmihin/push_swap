@@ -517,25 +517,28 @@ unsigned int	find_cost(unsigned int index, t_list *S)
 	unsigned int	pos;
 	unsigned int	med_S;
 	unsigned int	tmp;
+	ps_node			*ps_tmp;
 
 	pos = 1;
+	ps_tmp = get_node(S);
+	tmp = ft_lstsize(S);
 
 	while (S)
 	{
-		if (((ps_node *)S->content)->index == index)
+		if (ps_tmp->index == index)
 			break;
 		S = S->next;
+		ps_tmp = get_node(S);
 		pos++;
 	}
 
-	tmp = ft_lstsize(S);
-	med_S = tmp;
+	med_S = tmp / 2;
 	if (tmp % 2)
 		med_S++;
 
 	if (pos <= med_S)
-		return (pos - 1);
-	return (tmp - pos + 1);
+		return (pos - 1 + 1);
+	return (tmp - pos + 1 + 1);
 }
 
 int		main(int argc, char **argv)
@@ -603,18 +606,27 @@ int		main(int argc, char **argv)
 
 	///сделать подсчёт действий в функции
 
-	key_points	k_p;
-	unsigned int med_A;
+	make_index(&A);
+
+	key_points		k_p;
+	unsigned int	med_A;
+	unsigned int	A_size;
+
+	A_size = ft_lstsize(A);
 
 	k_p.min_index = 1;
-	k_p.max_index = ft_lstsize(A);
+	k_p.max_index = A_size;
 	med_A = k_p.max_index;
 
 	unsigned int steps = 0;
 
-	while (ft_lstsize(A) > 2)
-	{
+	k_p.min_cost = find_cost(k_p.min_index, A);
+	k_p.max_cost = find_cost(k_p.max_index, A);
 
+
+	while (A_size > 2)
+	{
+		A_size--;
 		if (k_p.min_cost <= k_p.max_cost)
 		{
 			k_p.min_index++;
@@ -642,6 +654,7 @@ int		main(int argc, char **argv)
 			steps++;
 			k_p.max_cost = find_cost(k_p.max_index, A);
 		}
+
 	}
 
 	if (((ps_node *)A->content)->index < ((ps_node *)A->next->content)->index)
