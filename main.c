@@ -512,53 +512,24 @@ t_list	*parser(char **str)
 	return (list);
 }
 
-unsigned int	find_cost(unsigned int index, t_list *S)
-{
-	unsigned int	pos;
-	unsigned int	med_S;
-	unsigned int	tmp;
-	ps_node			*ps_tmp;
 
-	pos = 1;
-	ps_tmp = get_node(S);
-	tmp = ft_lstsize(S);
-
-	while (S)
-	{
-		if (ps_tmp->index == index)
-			break;
-		S = S->next;
-		ps_tmp = get_node(S);
-		pos++;
-	}
-
-	med_S = tmp / 2;
-	if (tmp % 2)
-		med_S++;
-
-	if (pos <= med_S)
-		return (pos - 1 + 1);
-	return (tmp - pos + 1 + 1);
-}
 
 int		main(int argc, char **argv)
 {
 	t_list *A;
 	t_list *B;
-//	int u;
 
-
-	if (argc == 1)
-	{
-		printf("No one argument! Bye!\n");
+	if (argc == 1 || argc == 2)
 		return (0);
-	}
-
-
 
 	A = parser(argv);
 	if (!A)
 		return (0);
+
+	if (argc < 7)
+		return (small_sort(&A, &B, argc));
+
+	return (big_sort(&A, &B));
 /*
 	printf("-----------------\n");
 
@@ -574,106 +545,10 @@ int		main(int argc, char **argv)
 	print_mark_list(A);
 
 	printf("-----------------\n");
-*/
+*/ //print stack info
 
 
 
-/*
-	unsigned int index = 1;
-	unsigned int descending_series = 0;
-	int move = 0;
-	while (!is_ascending(A))
-	{
-		if (((ps_node *)A->content)->index == index)
-		{
-			pb(&A, &B);
-			move++;
-			index++;
-		}
-		else
-		{
-			rl(&A, 'a');
-			move++;
-		}
-	}
-
-	while (B)
-	{
-		pa(&A, &B);
-		move++;
-	}
-*/ //easiest algoritm
-
-	///сделать подсчёт действий в функции
-
-	make_index(&A);
-
-	key_points		k_p;
-	unsigned int	med_A;
-	unsigned int	A_size;
-
-	A_size = ft_lstsize(A);
-
-	k_p.min_index = 1;
-	k_p.max_index = A_size;
-	med_A = k_p.max_index;
-
-	unsigned int steps = 0;
-
-	k_p.min_cost = find_cost(k_p.min_index, A);
-	k_p.max_cost = find_cost(k_p.max_index, A);
-
-
-	while (A_size > 2)
-	{
-		A_size--;
-		if (k_p.min_cost <= k_p.max_cost)
-		{
-			k_p.min_index++;
-			while (k_p.min_cost)
-			{
-				ra(&A);
-				printf("A\n");
-				steps++;
-				k_p.min_cost--;
-			}
-			pb(&A, &B);
-			steps++;
-			k_p.min_cost = find_cost(k_p.min_index, A);
-		}
-		else
-		{
-			k_p.max_index--;
-			while (k_p.max_cost)
-			{
-				rra(&A);
-				steps++;
-				k_p.max_cost--;
-			}
-			pb(&A, &B);
-			steps++;
-			k_p.max_cost = find_cost(k_p.max_index, A);
-		}
-
-	}
-
-	if (((ps_node *)A->content)->index < ((ps_node *)A->next->content)->index)
-	{
-		sa(&A);
-		steps++;
-	}
-
-	while (B)
-	{
-		pa(&A, &B);
-		steps++;
-		if (((ps_node *)A->content)->index > med_A)
-		{
-			ra(&A);
-			printf("B\n");
-			steps++;
-		}
-	}
 
 
 

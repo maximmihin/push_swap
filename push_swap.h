@@ -40,4 +40,12 @@ int	pa(t_list **A, t_list **B);
 int pb(t_list **A, t_list **B);
 
 
+void	make_index(t_list **S);
+
+int	three_sort(t_list **S);
+int	five_sort(t_list **A, t_list **B);
+int	small_sort(t_list **A, t_list **B, int argc);
+
+int big_sort(t_list **A, t_list **B);
+
 #endif

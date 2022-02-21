@@ -20,13 +20,10 @@ int sl(t_list **S)
 	t_list *tmp;
 	t_list *s;
 
-	if (!*S)
-	{
-		ft_putstr_fd("error s : invalid A || B", 1);
-		return (1);
-	}
-
 	s = *S;
+
+	if (!s && !s->next)
+		return (1);
 
 	tmp = s->next->next;
 	s->next->next = *S;
@@ -161,3 +158,203 @@ int pb(t_list **A, t_list **B)
 	write(1, "pb\n", 3);
 	return (0);
 }
+
+int	three_sort(t_list **S)
+{
+	unsigned int	val[3];
+	unsigned int	i;
+	t_list 			*list_tmp;
+
+	list_tmp = *S;
+	i = 0;
+	while (i < 3)
+	{
+		val[i] = (((ps_node *)list_tmp->content)->content);
+		list_tmp = list_tmp->next;
+		i++;
+	}
+	if (val[0] > val[1] && val[0] < val[2] && val[1] < val [2]) // case 1
+		return (sa(S));
+	if (val[0] > val[1] && val[0] > val[2] && val[1] > val[2]) // case 2
+		return (sa(S) +	rra(S));
+	if (val[0] > val[1] && val[0] > val[2] && val[1] < val[2]) // case 3
+		return (ra(S));
+	if (val[0] < val[1] && val[0] < val[2] && val[1] > val[2]) // case 4
+		return (sa(S) + ra(S));
+	if (val[0] < val[1] && val[0] > val[2] && val[1] > val[2]) // case 5
+		return (rra(S));
+	return (1);
+}
+
+int	four_sort(t_list **A, t_list **B)
+{
+	t_list *tmp_list;
+
+	make_index(A);
+	pb(A, B);
+	three_sort(A);
+	tmp_list = *B;
+	if (((ps_node *)tmp_list->content)->index == 2)
+		return (pa(A, B) + sa(A));
+	if (((ps_node *)tmp_list->content)->index == 3)
+		return (rra(A) + pa(A, B) + ra(A) + ra(A));
+	if (((ps_node *)tmp_list->content)->index == 4)
+		return (pa(A, B) + ra(A));
+	return (pa(A, B));
+}
+
+int	five_sort(t_list **A, t_list **B)
+{
+	t_list	*tmp_list;
+	unsigned int	len_stack;
+
+	tmp_list = *A;
+	len_stack = 5;
+	make_index(A);
+	while (len_stack > 3)
+	{
+		if (((ps_node *)tmp_list->content)->index != 3
+			&& ((ps_node *)tmp_list->content)->index != 4)
+		{
+			pb(A, B);
+			len_stack--;
+		}
+		else
+			ra(A);
+	}
+	three_sort(A);
+	pa (A, B);
+	tmp_list = *A;
+
+	if (((ps_node *)tmp_list->content)->index == 5)
+		ra(A);
+
+	pa (A, B);
+	tmp_list = *A;
+
+	if (((ps_node *)tmp_list->content)->index == 5)
+		ra(A);
+	if (((ps_node *)tmp_list->content)->index == 2)
+		sa(A);
+	return (0);
+}
+
+int	small_sort(t_list **A, t_list **B, int argc)
+{
+	t_list	*list_tmp;
+
+	list_tmp = *A;
+	if (argc == 3)
+		if (((ps_node *)list_tmp->content)->content
+			> ((ps_node *)list_tmp->next->content)->content)
+			return (sa(&list_tmp));
+	if (argc == 4)
+		return (three_sort(&list_tmp));
+	if (argc == 5)
+		return (four_sort(A, B));
+	if (argc == 6)
+		return (five_sort(A, B));
+	return (0);
+}
+
+unsigned int	find_cost(unsigned int index, t_list *S)
+{
+	unsigned int	pos;
+	unsigned int	med_S;
+	unsigned int	tmp;
+	ps_node			*tmp_node;
+
+	pos = 1;
+	tmp_node = ((ps_node *)S->content);
+	tmp = ft_lstsize(S);
+
+	while (S)
+	{
+		if (tmp_node->index == index)
+			break;
+		S = S->next;
+		tmp_node = ((ps_node *)S->content);
+		pos++;
+	}
+
+	med_S = tmp / 2;
+	if (tmp % 2)
+		med_S++;
+
+	if (pos <= med_S)
+		return (pos - 1 + 1);
+	return (tmp - pos + 1 + 1);
+}
+
+int big_sort(t_list **A, t_list **B)
+{
+	///сделать подсчёт действий в функции
+	key_points		k_p;
+	unsigned int	median;
+	unsigned int	A_size;
+	unsigned int	steps;
+
+	make_index(A);
+	A_size = ft_lstsize(*A);
+
+	k_p.min_index = 1;
+	k_p.max_index = A_size;
+	median = k_p.max_index;
+
+	steps = 0;
+
+	k_p.min_cost = find_cost(k_p.min_index, *A);
+	k_p.max_cost = find_cost(k_p.max_index, *A);
+
+
+	while (A_size > 5)
+	{
+		A_size--;
+		if (k_p.min_cost <= k_p.max_cost)
+		{
+			k_p.min_index++;
+			while (k_p.min_cost)
+			{
+				ra(A);
+				printf("A\n");
+				steps++;
+				k_p.min_cost--;
+			}
+			pb(A, B);
+			steps++;
+			k_p.min_cost = find_cost(k_p.min_index, *A);
+		}
+		else
+		{
+			k_p.max_index--;
+			while (k_p.max_cost)
+			{
+				rra(A);
+				steps++;
+				k_p.max_cost--;
+			}
+			pb(A, B);
+			steps++;
+			k_p.max_cost = find_cost(k_p.max_index, *A);
+		}
+	}
+
+	if (((ps_node *)A->content)->index < ((ps_node *)A->next->content)->index)
+	{
+		sa(A);
+		steps++;
+	}
+
+	while (B)
+	{
+		pa(A, B);
+		steps++;
+		if (((ps_node *)A->content)->index > median)
+		{
+			ra(A);
+			printf("B\n");
+			steps++;
+		}
+	}
+}
+
