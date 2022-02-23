@@ -17,10 +17,16 @@ typedef struct ps_node
 typedef struct s_extrema
 {
 	unsigned int	min_index;
+	char 			min_gate;
 	unsigned int	min_cost;
+	unsigned int	min_pos;
 	unsigned int	max_index;
+	char 			max_gate;
 	unsigned int	max_cost;
-	char 			top_bottom;
+	unsigned int	max_pos;
+	unsigned int	next_elem;
+	char		 	next_elem_gate;
+	unsigned int 	next_elem_cost;
 }	t_extrema;
 
 ps_node	*ft_nodenew(int content);

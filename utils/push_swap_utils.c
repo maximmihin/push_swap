@@ -257,43 +257,70 @@ int	small_sort(t_list **A, t_list **B, int argc)
 	return (0);
 }
 
-unsigned int	find_cost(unsigned int index, t_list *S)
+
+
+
+unsigned int	find_pos(t_list *A, unsigned int index)
 {
 	unsigned int	pos;
-	unsigned int	med_S;
-	unsigned int	tmp;
 	ps_node			*tmp_node;
 
 	pos = 1;
-	tmp_node = ((ps_node *)S->content);
-	tmp = ft_lstsize(S);
+	tmp_node = ((ps_node *)A->content);
 
-	while (S)
+	while (A)
 	{
 		if (tmp_node->index == index)
 			break;
-		S = S->next;
-		tmp_node = ((ps_node *)S->content);
+		A = A->next;
+		tmp_node = ((ps_node *)A->content);
 		pos++;
 	}
+	return (pos);
+}
 
-	med_S = tmp / 2;
-	if (tmp % 2)
+char			find_gate(size_t a_size, unsigned int pos)
+{
+	unsigned int	med_S;
+
+	med_S = a_size / 2;
+	if (a_size % 2)
 		med_S++;
 
 	if (pos <= med_S)
-		return (pos - 1 + 1);
-	return (tmp - pos + 1 + 1);
+		return ('T');
+	else
+		return ('B');
 }
 
-unsigned int	find_low_cost(unsigned int index, t_list *S, )
+unsigned int	find_cost(size_t a_size, char gate, unsigned int pos)
 {
-
+	if (gate == 'T')
+		return (pos);
+	else
+		return (a_size - pos + 1);
 }
 
-t_extrema	*choose_next_elem(t_list *A, t_list *B, t_extrema *extrema)
+unsigned int	find_next_elem(t_list *A, unsigned int a_size,
+							   t_extrema **extrema)
 {
+	t_extrema 		*tmp_extrema;
 
+	tmp_extrema = *extrema;
+
+	tmp_extrema->min_pos = find_pos(A, tmp_extrema->min_index);
+	tmp_extrema->max_pos = find_pos(A, tmp_extrema->max_index);
+
+	tmp_extrema->min_gate = find_gate(a_size, tmp_extrema->min_pos);
+	tmp_extrema->max_gate = find_gate(a_size, tmp_extrema->max_pos);
+
+	tmp_extrema->min_cost = find_cost(a_size, tmp_extrema->min_gate, tmp_extrema->min_pos);
+	tmp_extrema->max_cost = find_cost(a_size, tmp_extrema->max_gate, tmp_extrema->max_pos);
+
+	if (tmp_extrema->max_cost > tmp_extrema->min_cost)
+		return (tmp_extrema->min_index);
+	else
+		return (tmp_extrema->max_index);
 }
 
 int fill_stack_a(t_list **A, t_list **B)
@@ -314,58 +341,73 @@ int fill_stack_a(t_list **A, t_list **B)
 	return (0);
 }
 
+void preproc_next_elem(t_extrema **extrema)
+{
+	t_extrema		*tmp_extrema;
+
+	tmp_extrema = *extrema;
+	if (tmp_extrema->next_elem == tmp_extrema->min_index)
+	{
+		tmp_extrema->next_elem_gate = tmp_extrema->min_gate;
+		tmp_extrema->next_elem_cost = tmp_extrema->min_cost - 1;
+	}
+	else
+	{
+		tmp_extrema->next_elem_gate = tmp_extrema->max_gate;
+		tmp_extrema->next_elem_cost = tmp_extrema->max_cost - 1;
+	}
+}
+
+int move_to_b(t_list **A, t_list **B, t_extrema **extrema)
+{
+	t_extrema		*tmp_extrema;
+
+	tmp_extrema = *extrema;
+
+	if (tmp_extrema->next_elem_gate == 'T')
+		while (tmp_extrema->next_elem_cost)
+		{
+			ra(A);
+			tmp_extrema->next_elem_cost--;
+		}
+	else if (tmp_extrema->next_elem_gate == 'B')
+		while (tmp_extrema->next_elem_cost)
+		{
+			rra(A);
+			tmp_extrema->next_elem_cost--;
+		}
+	pb(A, B);
+	if (tmp_extrema->next_elem == tmp_extrema->min_index)
+		tmp_extrema->min_index++;
+	else
+		tmp_extrema->max_index--;
+	return (0);
+}
+
 int big_sort(t_list **A, t_list **B)
 {
 	///сделать подсчёт действий в функции
 	t_extrema		*extrema;
 	unsigned int	a_size;
-	unsigned int	steps;
-
 
 	extrema = (t_extrema *) malloc(sizeof (t_extrema));
 	if (!extrema)
 		return (1);
-
 	a_size = ft_lstsize(*A);
+
 	extrema->min_index = 1;
 	extrema->max_index = a_size;
-
 	make_index(A);
 
 	while (a_size > 5)
 	{
+		extrema->next_elem = find_next_elem(*A, a_size, &extrema);
+		preproc_next_elem(&extrema);
+		move_to_b(A, B, &extrema);
 		a_size--;
-		extrema->min_cost = find_cost(extrema->min_index, *A);
-		extrema->max_cost = find_cost(extrema->max_index, *A);
-		if (extrema->min_cost <= extrema->max_cost)
-		{
-			extrema->min_index++;
-			while (extrema->min_cost)
-			{
-				ra(A);
-				printf("A\n");
-				steps++;
-				extrema->min_cost--;
-			}
-			pb(A, B);
-			steps++;
-		}
-		else
-		{
-			extrema->max_index--;
-			while (extrema->max_cost)
-			{
-				rra(A);
-				steps++;
-				extrema->max_cost--;
-			}
-			pb(A, B);
-			steps++;
-		}
 	}
-
 	five_sort(A, B);
 	fill_stack_a(A, B);
-
+	return (0);
 }
 
