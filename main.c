@@ -26,6 +26,18 @@ void	print_index_list(t_list *S)
 	printf("\n");
 }
 
+void	print_two_stack(t_list *A, t_list *B)
+{
+
+	printf("----------------------\n");
+	printf("A : ");
+	print_index_list(A);
+	printf("B : ");
+	print_index_list(B);
+	printf("----------------------\n");
+
+}
+
 void	print_mark_list(t_list *S)
 {
 	ps_node *ps_tmp;
@@ -509,9 +521,10 @@ t_list	*parser(char **str)
 	while (str[i])
 		ft_lstadd_back(&list, ft_lstnew(ft_nodenew(ft_atoi(str[i++]))));
 
+	make_index(&list);
+
 	return (list);
 }
-
 
 
 int		main(int argc, char **argv)

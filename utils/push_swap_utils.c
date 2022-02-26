@@ -161,7 +161,7 @@ int pb(t_list **A, t_list **B)
 
 int	three_sort(t_list **S)
 {
-	unsigned int	val[3];
+	int	val[3];
 	unsigned int	i;
 	t_list 			*list_tmp;
 
@@ -203,39 +203,110 @@ int	four_sort(t_list **A, t_list **B)
 	return (pa(A, B));
 }
 
-int	five_sort(t_list **A, t_list **B)
+unsigned int	find_min_index(t_list *A)
+{
+	unsigned int min_index;
+
+	min_index = ((ps_node *)A->content)->index;
+	A = A->next;
+	while (A)
+	{
+		if (((ps_node *)A->content)->index < min_index)
+			min_index = ((ps_node *)A->content)->index;
+		A = A->next;
+	}
+	return (min_index);
+}
+
+void			apply_delta(t_list **A, unsigned int delta)
 {
 	t_list	*tmp_list;
+
+	tmp_list = *A;
+
+	while (tmp_list)
+	{
+		((ps_node *)tmp_list->content)->index = ((ps_node *)
+				tmp_list->content)->index - delta;
+		tmp_list = tmp_list->next;
+	}
+}
+
+void			cancel_delta(t_list **A, unsigned int delta)
+{
+	t_list	*tmp_list;
+
+	tmp_list = *A;
+
+	while (tmp_list)
+	{
+		((ps_node *)tmp_list->content)->index += delta;
+		tmp_list = tmp_list->next;
+	}
+}
+
+int	five_sort(t_list **A, t_list **B)
+{
+	t_list			*tmp_list;
 	unsigned int	len_stack;
+	unsigned int	delta;
 
 	tmp_list = *A;
 	len_stack = 5;
-	make_index(A);
+	delta = find_min_index(tmp_list) - 1;
+	apply_delta(&tmp_list, delta);
+	print_two_stack(tmp_list, *B);
+
 	while (len_stack > 3)
 	{
 		if (((ps_node *)tmp_list->content)->index != 3
 			&& ((ps_node *)tmp_list->content)->index != 4)
 		{
-			pb(A, B);
+			pb(&tmp_list, B);
+			print_two_stack(tmp_list, *B);
 			len_stack--;
 		}
 		else
-			ra(A);
+		{
+			ra(&tmp_list);
+			print_two_stack(tmp_list, *B);
+		}
 	}
-	three_sort(A);
-	pa (A, B);
+	print_two_stack(tmp_list, *B);
+	three_sort(&tmp_list);
+	print_two_stack(tmp_list, *B);
+
+	pa (&tmp_list, B);
+	print_two_stack(tmp_list, *B);
 	tmp_list = *A;
 
 	if (((ps_node *)tmp_list->content)->index == 5)
-		ra(A);
+	{
+		ra(&tmp_list);
+		print_two_stack(tmp_list, *B);
+	}
 
-	pa (A, B);
-	tmp_list = *A;
+	pa (&tmp_list, B);
+	print_two_stack(tmp_list, *B);
+//	*A = tmp_list;
+//	tmp_list = *B;
+//	tmp_list = *A;
 
 	if (((ps_node *)tmp_list->content)->index == 5)
-		ra(A);
+	{
+		ra(&tmp_list);
+		print_two_stack(tmp_list, *B);
+	}
 	if (((ps_node *)tmp_list->content)->index == 2)
-		sa(A);
+	{
+		sa(&tmp_list);
+		print_two_stack(tmp_list, *B);
+	}
+
+	cancel_delta(&tmp_list, delta);
+	*A = tmp_list;
+//	print_two_stack(tmp_list, *B);
+//	print_two_stack(*A, *B);
 	return (0);
 }
 
@@ -296,7 +367,7 @@ char			find_gate(size_t a_size, unsigned int pos)
 unsigned int	find_cost(size_t a_size, char gate, unsigned int pos)
 {
 	if (gate == 'T')
-		return (pos);
+		return (pos - 1);
 	else
 		return (a_size - pos + 1);
 }
@@ -328,16 +399,16 @@ int fill_stack_a(t_list **A, t_list **B)
 	t_list *tmp_list;
 
 	tmp_list = *A;
-	while (B)
+	while (*B)
 	{
-		pa(A, B);
+		pa(&tmp_list, B);
 		if (((ps_node *)tmp_list->content)->index
 			> ((ps_node *)tmp_list->next->content)->index)
 		{
-			ra(A);
-			printf("B\n");
+			ra(&tmp_list);
 		}
 	}
+	*A = tmp_list;
 	return (0);
 }
 
@@ -349,12 +420,12 @@ void preproc_next_elem(t_extrema **extrema)
 	if (tmp_extrema->next_elem == tmp_extrema->min_index)
 	{
 		tmp_extrema->next_elem_gate = tmp_extrema->min_gate;
-		tmp_extrema->next_elem_cost = tmp_extrema->min_cost - 1;
+		tmp_extrema->next_elem_cost = tmp_extrema->min_cost; // -1
 	}
 	else
 	{
 		tmp_extrema->next_elem_gate = tmp_extrema->max_gate;
-		tmp_extrema->next_elem_cost = tmp_extrema->max_cost - 1;
+		tmp_extrema->next_elem_cost = tmp_extrema->max_cost; // -1
 	}
 }
 
@@ -397,17 +468,22 @@ int big_sort(t_list **A, t_list **B)
 
 	extrema->min_index = 1;
 	extrema->max_index = a_size;
-	make_index(A);
+//	printf("A : ");
+//	print_index_list(*A);
+//	printf("----------------------\n");
 
 	while (a_size > 5)
 	{
 		extrema->next_elem = find_next_elem(*A, a_size, &extrema);
 		preproc_next_elem(&extrema);
 		move_to_b(A, B, &extrema);
+//		print_two_stack(*A, *B);
 		a_size--;
 	}
 	five_sort(A, B);
+//	print_two_stack(*A, *B);
 	fill_stack_a(A, B);
+//	print_two_stack(*A, *B);
 	return (0);
 }
 

@@ -55,4 +55,9 @@ int	small_sort(t_list **A, t_list **B, int argc);
 
 int big_sort(t_list **A, t_list **B);
 
+
+
+void	print_index_list(t_list *S);
+void	print_two_stack(t_list *A, t_list *B);
+
 #endif
