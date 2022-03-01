@@ -139,7 +139,7 @@ int pl(t_list **A, t_list **B)
 		tmp = b->next;
 	else
 		tmp = NULL;
-	ft_lstadd_front(A, b);
+	ft_lstadd_front(A, *B);
 	*B = tmp;
 
 	return (0);
@@ -255,7 +255,7 @@ int	five_sort(t_list **A, t_list **B)
 	len_stack = 5;
 	delta = find_min_index(tmp_list) - 1;
 	apply_delta(&tmp_list, delta);
-	print_two_stack(tmp_list, *B);
+//	print_two_stack(tmp_list, *B);
 
 	while (len_stack > 3)
 	{
@@ -263,31 +263,31 @@ int	five_sort(t_list **A, t_list **B)
 			&& ((ps_node *)tmp_list->content)->index != 4)
 		{
 			pb(&tmp_list, B);
-			print_two_stack(tmp_list, *B);
+//			print_two_stack(tmp_list, *B);
 			len_stack--;
 		}
 		else
 		{
 			ra(&tmp_list);
-			print_two_stack(tmp_list, *B);
+//			print_two_stack(tmp_list, *B);
 		}
 	}
-	print_two_stack(tmp_list, *B);
+//	print_two_stack(tmp_list, *B);
 	three_sort(&tmp_list);
-	print_two_stack(tmp_list, *B);
+//	print_two_stack(tmp_list, *B);
 
 	pa (&tmp_list, B);
-	print_two_stack(tmp_list, *B);
-	tmp_list = *A;
+//	print_two_stack(tmp_list, *B);
+//	tmp_list = *A;
 
 	if (((ps_node *)tmp_list->content)->index == 5)
 	{
 		ra(&tmp_list);
-		print_two_stack(tmp_list, *B);
+//		print_two_stack(tmp_list, *B);
 	}
 
 	pa (&tmp_list, B);
-	print_two_stack(tmp_list, *B);
+//	print_two_stack(tmp_list, *B);
 //	*A = tmp_list;
 //	tmp_list = *B;
 //	tmp_list = *A;
@@ -295,12 +295,12 @@ int	five_sort(t_list **A, t_list **B)
 	if (((ps_node *)tmp_list->content)->index == 5)
 	{
 		ra(&tmp_list);
-		print_two_stack(tmp_list, *B);
+//		print_two_stack(tmp_list, *B);
 	}
 	if (((ps_node *)tmp_list->content)->index == 2)
 	{
 		sa(&tmp_list);
-		print_two_stack(tmp_list, *B);
+//		print_two_stack(tmp_list, *B);
 	}
 
 	cancel_delta(&tmp_list, delta);
