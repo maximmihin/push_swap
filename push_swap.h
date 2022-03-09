@@ -14,20 +14,24 @@ typedef struct ps_node
 	char			mark;
 }	ps_node;
 
-typedef struct s_extrema
+typedef struct s_pool_node
 {
-	unsigned int	min_index;
-	char 			min_gate;
-	unsigned int	min_cost;
-	unsigned int	min_pos;
-	unsigned int	max_index;
-	char 			max_gate;
-	unsigned int	max_cost;
-	unsigned int	max_pos;
-	unsigned int	next_elem;
-	char		 	next_elem_gate;
-	unsigned int 	next_elem_cost;
-}	t_extrema;
+	char			min_max;
+	unsigned int	index;
+	unsigned int	pos;
+	char			gate;
+	unsigned int	cost;
+}	t_pool_node;
+
+typedef struct s_element_to_move
+{
+	unsigned int	index;
+	char		 	gate;
+	unsigned int 	cost;
+}	t_element_to_move;
+
+
+
 
 ps_node	*ft_nodenew(int content);
 

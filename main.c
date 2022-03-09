@@ -150,7 +150,6 @@ void	make_index(t_list **S)
 
 
 //MARK
-
 /*
 char	**make_ind_mark(unsigned int lst_len)
 {
@@ -559,14 +558,6 @@ int		main(int argc, char **argv)
 
 	printf("-----------------\n");
 */ //print stack info
-
-
-
-
-
-
-
-//	printf("= %d\n", ft_lstsize(B));
 /*
 	printf("After algoritm :\n");
 	print_content_list(A);
@@ -574,44 +565,4 @@ int		main(int argc, char **argv)
 
 	printf("-----------------\n");
 */
-//	printf("move = %d\n", steps);
-
-
-
-
-//sl, rl, rrl tests
-/*
-	printf("Before : ");
-	print_content_list(&A);
-	rl(&A, 'a');
-	printf("\nAfter  : ");
-	print_content_list(&A);
-	printf("\n");
-*/
-//pl tests
-/*
-	char **qq;
-	char str[] = "5 6 7 8 9";
-
-	qq = ft_split(str, ' ');
-
-	B = ft_lstnew(qq[0]);
-
-	i = 1;
-	while (qq[i])
-		ft_lstadd_back(&B, ft_lstnew(qq[i++]));
-
-
-	printf("A : ");
-	print_list(&A);
-	printf("\nB : ");
-	print_list(&B);
-	printf("\n-----------------\n");
-	pl(&A, &B, 'a');
-	printf("A : ");
-	print_list(&A);
-	printf("\nB : ");
-	print_list(&B);
-*/
-	return (0);
 }
