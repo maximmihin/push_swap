@@ -13,6 +13,7 @@ typedef struct ps_node
 	unsigned int 	index;
 	unsigned int	stack_index;
 	char			mark;
+	char			del;
 }	ps_node;
 
 typedef struct s_pool_node
@@ -30,6 +31,8 @@ typedef struct s_element_to_move
 	unsigned int	index;
 	char		 	gate;
 	unsigned int 	cost;
+	unsigned int 	index_next;
+	char 			gate_next;
 }	t_element_to_move;
 
 
@@ -65,5 +68,7 @@ int big_sort(t_list **A, t_list **B);
 
 void	print_index_list(t_list *S);
 void	print_two_stack(t_list *A, t_list *B);
+
+int		is_ascending(t_list *S);
 
 #endif

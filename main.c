@@ -479,6 +479,19 @@ int		check_double(char **str)
 	return (0);
 }
 
+void 	bzero_del(t_list **list)
+{
+	t_list	*tmp_list;
+
+	tmp_list = *list;
+
+	while (tmp_list)
+	{
+		((ps_node *)tmp_list->content)->del = 'N';
+		tmp_list = tmp_list->next;
+	}
+}
+
 /*
 int		s_check_double(t_list *list)
 {
@@ -527,6 +540,7 @@ t_list	*parser(char **str)
 		ft_lstadd_back(&list, ft_lstnew(ft_nodenew(ft_atoi(str[i++]))));
 
 	make_index(&list);
+	bzero_del(&list);
 
 	return (list);
 }
