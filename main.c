@@ -28,13 +28,19 @@ void	print_index_list(t_list *S)
 
 void	print_two_stack(t_list *A, t_list *B)
 {
+	printf("---------- two stack ------------\n");
 
-	printf("----------------------\n");
 	printf("A : ");
 	print_index_list(A);
+
+
 	printf("B : ");
 	print_index_list(B);
-	printf("----------------------\n");
+
+	printf("\nA len = %d\n", ft_lstsize(A));
+	printf("B len = %d\n", ft_lstsize(B));
+
+	printf("---------------------------------\n");
 
 }
 

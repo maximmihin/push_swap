@@ -8,6 +8,7 @@
 
 typedef struct ps_node
 {
+	char			min_max;
 	int				content;
 	unsigned int 	index;
 	unsigned int	stack_index;
@@ -25,6 +26,7 @@ typedef struct s_pool_node
 
 typedef struct s_element_to_move
 {
+	char			min_max;
 	unsigned int	index;
 	char		 	gate;
 	unsigned int 	cost;

@@ -338,13 +338,10 @@ int				small_sort(t_list **A, t_list **B, int argc)
 
 
 
-unsigned int	find_num_pool_nodes(unsigned int len_stack)
-{
-	if (len_stack < 100)
-		return (4);
-	else
-		return (30);
-}
+
+
+
+
 
 t_pool_node		*pool_node_new(unsigned int index)
 {
@@ -484,8 +481,8 @@ char				find_gate(unsigned int stack_size, unsigned int pos)
 
 unsigned int		find_cost(size_t stack_size, char gate, unsigned int pos)
 {
-	if (pos == 0)
-		return (stack_size + 1);
+//	if (pos == 0)
+//		return (stack_size + 1);
 	if (gate == 'T')
 		return (pos - 1);
 	else
@@ -529,21 +526,39 @@ void				calculate_all_costs(t_list **desired_pool, t_list *stack,
 
 
 // не обработал крайние случаи
-unsigned int		find_max_in_bottom(t_list *desired_pool)
+unsigned int		find_min_in_bottom(t_list *desired_pool, t_list *stack_b)
 {
 	unsigned int		max_in_bottom;
 
 	max_in_bottom = ((t_pool_node *)desired_pool->content)->index;
+
+
 	while (((t_pool_node *)desired_pool->content)->min_max == 'B')
 	{
 		if (((t_pool_node *)desired_pool->content)->index > max_in_bottom)
 			max_in_bottom = ((t_pool_node *)desired_pool->content)->index;
+
 		desired_pool = desired_pool->next;
 	}
+
+
+	while (stack_b)
+	{
+		/// искать надо в стеке Б максимальный элемент этого типа
+		if (((ps_node *)stack_b->content)->min_max == 'B'
+		&& ((ps_node *)stack_b->content)->index > max_in_bottom)
+		{
+			max_in_bottom = ((ps_node *)stack_b->content)->index;
+		}
+		stack_b = stack_b->next;
+	}
+
+
+
 	return (max_in_bottom);
 }
 
-unsigned int		find_min_in_top(t_list *desired_pool)
+unsigned int		find_max_in_top(t_list *desired_pool, t_list *stack_b)
 {
 	unsigned int		min_in_top;
 
@@ -556,11 +571,25 @@ unsigned int		find_min_in_top(t_list *desired_pool)
 			min_in_top = ((t_pool_node *)desired_pool->content)->index;
 		desired_pool = desired_pool->next;
 	}
+
+
+
+	while (stack_b)
+	{
+		if (((ps_node *)stack_b->content)->min_max == 'T'
+		&& ((ps_node *)stack_b->content)->index < min_in_top)
+		{
+			min_in_top = ((ps_node *)stack_b->content)->index;
+		}
+		stack_b = stack_b->next;
+	}
+
 	return (min_in_top);
 }
 
 void				preproc_next_elem(t_list **desired_pool, t_list **min_list,
-								  t_list *stack, unsigned int stack_size)
+								  t_list *stack_a, t_list *stack_b,
+								  unsigned int stack_size)
 {
 	t_list				*tmp_min_list;
 	unsigned int		max_in_bottom;
@@ -599,12 +628,16 @@ void				preproc_next_elem(t_list **desired_pool, t_list **min_list,
 	// нужно обработать кейс, когда размер desired pool больше 5
 	if (((t_pool_node *)tmp_min_list->content)->min_max == 'B')
 	{
-		max_in_bottom = find_max_in_bottom(*desired_pool);
+		max_in_bottom = find_min_in_bottom(*desired_pool, stack_b);
 		((t_pool_node *)tmp_min_list->content)->index = max_in_bottom + 1;
+
+		// нужно найти самый большой элемент этого типа в обоих стеках (в том
+		// числе в стеке Б) !!!
+		//
 	}
 	else
 	{
-		min_in_top = find_min_in_top(*desired_pool);
+		min_in_top = find_max_in_top(*desired_pool, stack_b);
 		((t_pool_node *)tmp_min_list->content)->index = min_in_top - 1;
 	}
 
@@ -613,10 +646,11 @@ void				preproc_next_elem(t_list **desired_pool, t_list **min_list,
 	//а теперь нужно пересчитать все парметры заново - ВСЕ нужно пересчитать
 	// не одну ноду, а все
 	// нет, не все, на данный момент при первом проходе изменений нет
-	calculate_all_costs(desired_pool, stack, stack_size);
+	calculate_all_costs(desired_pool, stack_a, stack_size);
 }
 
-t_element_to_move	choose_next_elem_to_a(t_list *A, unsigned int a_size,
+t_element_to_move	choose_next_elem_to_a(t_list *A, t_list *B,
+										   unsigned int a_size,
 										   t_list **desired_pool)
 {
 	t_element_to_move	next_elem;
@@ -646,9 +680,12 @@ t_element_to_move	choose_next_elem_to_a(t_list *A, unsigned int a_size,
 	next_elem.gate = ((t_pool_node *)min_list->content)->gate;
 	next_elem.cost = ((t_pool_node *)min_list->content)->cost;
 
+	//test
+	next_elem.min_max = ((t_pool_node *)min_list->content)->min_max;
+
 
 	//preproc next_elem (внутри переидексировать только выбранный элемент)
-	preproc_next_elem(desired_pool, &min_list, A, a_size);
+	preproc_next_elem(desired_pool, &min_list, A, B, a_size);
 
 
 	return (next_elem);
@@ -656,6 +693,8 @@ t_element_to_move	choose_next_elem_to_a(t_list *A, unsigned int a_size,
 
 void				move_to_b(t_list **A, t_list **B, t_element_to_move next_elem)
 {
+
+
 	if (next_elem.gate == 'T')
 		while (next_elem.cost)
 		{
@@ -669,29 +708,50 @@ void				move_to_b(t_list **A, t_list **B, t_element_to_move next_elem)
 			next_elem.cost--;
 		}
 	pb(A, B);
+
+
+	/// test
+
+	t_list *tmp_b;
+	 tmp_b = *B;
+
+		((ps_node *)tmp_b->content)->min_max = next_elem.min_max;
+
+		if (next_elem.min_max == 'B' && tmp_b->next)
+			rb(B);
+
 }
 
 void				move_to_a(t_list **A, t_list **B, t_element_to_move next_elem)
 {
 	t_list	*tmp_a;
+	int 	r_counter;
+
+
+	r_counter = 0;
+
 
 	if (next_elem.gate == 'T')
 		while (next_elem.cost)
 		{
 			rb(B);
 			next_elem.cost--;
+			r_counter++;
 		}
 	else if (next_elem.gate == 'B')
 		while (next_elem.cost)
 		{
 			rrb(B);
 			next_elem.cost--;
+			r_counter++;
 		}
 	pa(A, B);
+
 	tmp_a = *A;
 	if (((ps_node *)tmp_a->content)->index
 	> ((ps_node *)tmp_a->next->content)->index)
 		ra(A);
+
 }
 
 t_element_to_move	choose_next_elem_to_b(t_list *stack_b,
@@ -732,6 +792,13 @@ t_element_to_move	choose_next_elem_to_b(t_list *stack_b,
 	return (next_elem);
 }
 
+
+
+
+
+
+// resize_desired_pool
+
 void				index_desired_pool_for_b(t_list **desired_pool, t_list *stack_a)
 {
 	unsigned int	median;
@@ -743,6 +810,235 @@ void				index_desired_pool_for_b(t_list **desired_pool, t_list *stack_a)
 	((t_pool_node *)tmp_desired_pool->content)->index = median + 1;
 	((t_pool_node *)tmp_desired_pool->next->content)->index = median - 1;
 }
+
+unsigned int		find_num_pool_nodes(unsigned int len_stack)
+{
+	unsigned int	perfect_len;
+	unsigned int 	deep;
+
+	deep = 10;
+
+	if (len_stack < 100)
+		return (2);
+
+	perfect_len = len_stack / deep;
+	if (perfect_len % 2)
+		perfect_len -= 1;
+
+	return (perfect_len);
+}
+
+size_t				find_perfect_len_desired_pool(unsigned int len_stack)
+{
+	unsigned int	perfect_len;
+	unsigned int	deep;
+
+	deep = 10;
+
+	perfect_len = len_stack / deep;
+	if (perfect_len % 2)
+		perfect_len -= 1;
+
+	return (perfect_len);
+}
+
+int					is_resize_need(unsigned int stack_size,
+									  unsigned int real_len)
+{
+	size_t	perfect_len;
+
+	if (real_len == 2)
+		return (0);
+
+	perfect_len = find_perfect_len_desired_pool(stack_size);
+
+	//сравнить
+	if (perfect_len < real_len && !(perfect_len % 2))
+		return (1);
+	return (0);
+
+
+/*
+	if (stack_size > 10 && stack_size <= 40)
+		perfect_len = 4;
+	else if (stack_size > 40 && stack_size <= 60)
+		perfect_len = 6;
+	else if (stack_size > 60 && stack_size <= 80)
+		perfect_len = 8;
+	else if (stack_size > 80 && stack_size <= 100)
+		perfect_len = 10;
+	else if (stack_size > 100 && stack_size <= 120)
+		perfect_len = 12;
+	else if (stack_size > 120 && stack_size <= 140)
+		perfect_len = 14;
+*/ // hard_value
+
+	return (0);
+}
+
+void				del_pool_node(t_list **desired_pool, t_list **node_to_del)
+{
+	t_list	*tmp_desired_pool;
+	t_list	*tmp_node_to_del;
+
+	tmp_desired_pool = *desired_pool;
+	tmp_node_to_del = *node_to_del;
+
+	if (tmp_desired_pool == tmp_node_to_del)
+	{
+		*desired_pool = tmp_desired_pool->next;
+	}
+	else
+	{
+		while (tmp_desired_pool->next != tmp_node_to_del)
+			tmp_desired_pool = tmp_desired_pool->next;
+
+		tmp_desired_pool->next = tmp_desired_pool->next->next;
+	}
+	ft_lstdelone(tmp_node_to_del, free);
+}
+
+t_list				*find_bottom_min(t_list **desired_pool)
+{
+	t_list			*tmp_desired_pool;
+	t_list			*bottom_min;
+	t_pool_node		*min_pool_node;
+	unsigned int	min_val;
+
+	tmp_desired_pool = *desired_pool;
+
+	bottom_min = tmp_desired_pool;
+	min_pool_node = (t_pool_node *)bottom_min->content;
+	min_val = min_pool_node->index;
+
+	while (((t_pool_node *)tmp_desired_pool->content)->min_max == 'B')
+	{
+		if (((t_pool_node *)tmp_desired_pool->content)->index > min_val)
+		{
+			bottom_min = tmp_desired_pool;
+			min_pool_node = (t_pool_node *)bottom_min->content;
+			min_val = min_pool_node->index;
+		}
+		tmp_desired_pool = tmp_desired_pool->next;
+	}
+	return (bottom_min);
+}
+
+void				del_bottom_min(t_list **desired_pool)
+{
+	t_list			*bottom_min;
+	t_list			*tmp_desired_pool;
+
+	tmp_desired_pool = *desired_pool;
+
+	bottom_min = find_bottom_min(&tmp_desired_pool);
+
+	del_pool_node(desired_pool, &bottom_min);
+}
+
+t_list				*find_top_max(t_list **desired_pool)
+{
+	t_list			*tmp_desired_pool;
+	t_list			*top_max;
+	t_pool_node		*max_pool_node;
+	unsigned int	max_val;
+
+	tmp_desired_pool = *desired_pool;
+
+	while (((t_pool_node *)tmp_desired_pool->content)->min_max == 'B')
+		tmp_desired_pool = tmp_desired_pool->next;
+
+	top_max = tmp_desired_pool;
+	max_pool_node = (t_pool_node *)top_max->content;
+	max_val = max_pool_node->index;
+
+	while (tmp_desired_pool)
+	{
+		// ???  > <
+		if (((t_pool_node *)tmp_desired_pool->content)->index < max_val)
+		{
+			top_max = tmp_desired_pool;
+			max_pool_node = (t_pool_node *)top_max->content;
+			max_val = max_pool_node->index;
+		}
+		tmp_desired_pool = tmp_desired_pool->next;
+	}
+	return (top_max);
+}
+
+void				del_top_max(t_list **desired_pool)
+{
+	t_list			*top_max;
+	t_list			*tmp_desired_pool;
+
+	tmp_desired_pool = *desired_pool;
+
+	top_max = find_top_max(&tmp_desired_pool);
+	del_pool_node(desired_pool, &top_max);
+}
+
+void				print_desired_pool(t_list **desired_pool)
+{
+	t_list		*tmp;
+	size_t desired_pool_len = 0;
+
+	tmp = *desired_pool;
+	printf("*****************************\n");
+	printf("index :");
+	while (tmp)
+	{
+		desired_pool_len++;
+		printf("%u ", ((t_pool_node *)tmp->content)->index);
+		tmp = tmp->next;
+	}
+	printf("\n");
+
+
+
+	tmp = *desired_pool;
+
+	printf("cost  :");
+	while (tmp)
+	{
+		printf("%u ", ((t_pool_node *)tmp->content)->cost);
+		tmp = tmp->next;
+	}
+	printf("\n");
+
+	printf("---------\ndesired_pool_len = %lu \n---------\n", desired_pool_len);
+
+	printf("*****************************\n");
+}
+
+void				resize_desired_pool(t_list **desired_pool)
+{
+		del_bottom_min(desired_pool);
+//		print_desired_pool(desired_pool);
+		del_top_max(desired_pool);
+//		print_desired_pool(desired_pool);
+}
+
+
+void				print_step(int steps)
+{
+	char *buffer;
+	int buffer_len = 15;
+	char *char_steps;
+	size_t len_str;
+
+	buffer = (char *) malloc(sizeof(char) * buffer_len);
+	ft_strlcpy(buffer, "step ", buffer_len);
+
+	char_steps = ft_itoa(steps);
+
+	buffer = ft_strjoin(buffer, char_steps);
+	len_str = ft_strlen(buffer);
+
+	write(1, buffer, len_str);
+	write(1, "\n", 1);
+	free (buffer);
+}
+
 
 int					big_sort(t_list **A, t_list **B)
 {
@@ -761,23 +1057,49 @@ int					big_sort(t_list **A, t_list **B)
 	if (!desired_pool)
 		return (1);
 	index_desired_pool_for_a(&desired_pool, num_pool_nodes, stack_size);
-	calculate_all_costs(&desired_pool, *A, stack_size);
 
+
+
+//	print_desired_pool(&desired_pool);
 //	print_two_stack(*A, *B);
-	while (stack_size > num_pool_nodes)
+
+
+
+
+
+	while (stack_size > 2)
 	{
-		next_elem = choose_next_elem_to_a(*A, stack_size, &desired_pool);
+		next_elem = choose_next_elem_to_a(*A, *B, stack_size, &desired_pool);
+
 		move_to_b(A, B, next_elem);
+//		int steps = 0;
+//		print_step(++steps);
 //		print_two_stack(*A, *B);
+//		print_desired_pool(&desired_pool);
+
+//		if (steps == 69)
+//			write (1, "69\n", 3);
+
+
+
+
 		stack_size--;
+
+		if (is_resize_need(stack_size, num_pool_nodes))
+		{
+			resize_desired_pool(&desired_pool);
+//			print_desired_pool(&desired_pool);
+			num_pool_nodes -=2;
+//			write(1, "resize *************************\n", 33);
+		}
+
+//		print_desired_pool(&desired_pool);
 	}
 //	print_two_stack(*A, *B);
 
 
 	while (--num_pool_nodes)
-	{
 		pb(A, B);
-	}
 	ft_lstclear(&desired_pool, free);
 
 

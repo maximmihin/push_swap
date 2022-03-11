@@ -16,4 +16,6 @@ add_executable(push_swap utils/push_swap_utils.c
         libft/ft_atoi.c libft/ft_isdigit.c
         libft/ft_strlen.c libft/ft_strncmp.c
         libft/ft_lstdelone.c libft/ft_lstclear.c
+        libft/ft_itoa.c libft/ft_strjoin.c
+        libft/ft_strlcpy.c
         )
