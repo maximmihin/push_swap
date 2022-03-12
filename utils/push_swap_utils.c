@@ -715,7 +715,7 @@ unsigned int		find_num_pool_nodes(unsigned int len_stack)
 	unsigned int 	deep;
 
 	/// deep
-	deep = 9;
+	deep = 7;
 
 	if (len_stack < 100)
 		return (4);
