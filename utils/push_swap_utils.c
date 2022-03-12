@@ -691,6 +691,15 @@ void				move_to_b(t_list **A, t_list **B, t_element_to_move next_elem)
 
 		if (next_elem.min_max == 'B' && tmp_b->next)
 			rb(B);
+
+		/// test sb - ухудшает
+/*
+		tmp_b = *B;
+		if ( tmp_b->next
+			&& (((ps_node *)tmp_b->content)->index
+		        < ((ps_node *)tmp_b->next->content)->index))
+			sb(B);
+*/
 }
 
 
@@ -706,7 +715,7 @@ unsigned int		find_num_pool_nodes(unsigned int len_stack)
 	unsigned int 	deep;
 
 	/// deep
-	deep = 5;
+	deep = 9;
 
 	if (len_stack < 100)
 		return (4);
@@ -731,7 +740,7 @@ unsigned int		find_perfect_len_desired_pool(unsigned int stack_size,
 
 	/// 10%
 	perfect_len = fact_deep;
-	perfect_len += (perfect_len / 100) * (0.2 * stack_size);
+	perfect_len += (perfect_len / 100) * (0.7 * stack_size);
 
 
 	return (perfect_len);
