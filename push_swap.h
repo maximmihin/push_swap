@@ -18,7 +18,7 @@ typedef struct ps_node
 
 typedef struct s_pool_node
 {
-	char			min_max;
+	char			bottom_top;
 	unsigned int	index;
 	unsigned int	pos;
 	char			gate;
