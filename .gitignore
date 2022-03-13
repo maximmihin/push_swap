@@ -51,7 +51,12 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+CMakeLists.txt
+cmake-build-debug/
 .DS_Store
-/cmake-build-debug
-.idea
-push_swap
+gnlTester/
+gnl-war-machine-v2019/
+.idea/
+.idea/*
+
+

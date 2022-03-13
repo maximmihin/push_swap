@@ -6,7 +6,15 @@ CC = gcc
 
 FLAGS = -Wall -Wextra -Werror
 
-SRC = utils/push_swap_utils.c main.c
+SRC = utils/push_swap_utils.c \
+		movements/pa.c movements/ra.c movements/rra.c movements/sa.c \
+		parser.c \
+		five_sort.c small_sort.c calculate_cost.c\
+		size_desired_pool.c resize_desired_pool.c\
+		init_desired_pool.c \
+		recost_desired_pool_utils.c \
+		big_sort_key.c \
+		main.c
 
 OBJ = $(SRC:%.c= %.o)
 
