@@ -1,31 +1,43 @@
 #include "push_swap.h"
 
-t_element_to_move	choose_next_elem_to_b(t_list *stack_b,
-										   unsigned int stack_size,
-										   t_list **desired_pool)
+t_element_to_move	get_next_elem(t_list *chosen_desired_pool_node)
 {
 	t_element_to_move	next_elem;
-	t_list				*bottom_desired_pool;
-	t_list				*top_desired_pool;
+	t_pool_node			*pool_node;
 
-	calculate_all_costs(desired_pool, stack_b, stack_size);
-	bottom_desired_pool = *desired_pool;
-	top_desired_pool = bottom_desired_pool->next;
-	if (((t_pool_node *)bottom_desired_pool->content)->cost
-		<= ((t_pool_node *)top_desired_pool->content)->cost)
+	pool_node = chosen_desired_pool_node->content;
+	next_elem.index = pool_node->index;
+	next_elem.gate = pool_node->gate;
+	next_elem.cost = pool_node->cost;
+	next_elem.min_max = pool_node->bottom_top;
+	return (next_elem);
+}
+
+t_element_to_move	choose_next_elem_first_step(t_list **desired_pool)
+{
+	t_element_to_move	next_elem;
+	t_list				*tmp_desired_pool;
+	t_list				*chosen_desired_pool_node;
+	unsigned int		min_cost;
+
+	tmp_desired_pool = *desired_pool;
+	while (((t_pool_node *)tmp_desired_pool->content)->bottom_top == 't')
+		tmp_desired_pool = tmp_desired_pool->next;
+	min_cost = ((t_pool_node *)tmp_desired_pool->content)->cost;
+	chosen_desired_pool_node = tmp_desired_pool;
+	while (tmp_desired_pool)
 	{
-		next_elem.index = ((t_pool_node *)bottom_desired_pool->content)->index;
-		next_elem.gate = ((t_pool_node *)bottom_desired_pool->content)->gate;
-		next_elem.cost = ((t_pool_node *)bottom_desired_pool->content)->cost;
-		((t_pool_node *)bottom_desired_pool->content)->index++;
+		if (((t_pool_node *)tmp_desired_pool->content)->cost < min_cost
+			&& (((t_pool_node *)tmp_desired_pool->content)->bottom_top == 'T'
+				|| ((t_pool_node *)tmp_desired_pool->content)->bottom_top == 'B'))
+		{
+			min_cost = ((t_pool_node *) tmp_desired_pool->content)->cost;
+			chosen_desired_pool_node = tmp_desired_pool;
+		}
+		tmp_desired_pool = tmp_desired_pool->next;
 	}
-	else
-	{
-		next_elem.index = ((t_pool_node *)top_desired_pool->content)->index;
-		next_elem.gate = ((t_pool_node *)top_desired_pool->content)->gate;
-		next_elem.cost = ((t_pool_node *)top_desired_pool->content)->cost;
-		((t_pool_node *)top_desired_pool->content)->index--;
-	}
+	next_elem = get_next_elem(chosen_desired_pool_node);
+	((t_pool_node *)chosen_desired_pool_node->content)->gate = 'R';
 	return (next_elem);
 }
 

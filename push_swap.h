@@ -93,15 +93,23 @@ int					del_waste_pool_node(t_list **desired_pool,
 
 t_list				*find_used_pool_node(t_list **desired_pool);
 
-t_element_to_move	choose_next_elem_to_b(t_list *stack_b,
-										   unsigned int stack_size,
-										   t_list **desired_pool);
+t_element_to_move	choose_next_elem_second_step(t_list *stack_b,
+												  unsigned int stack_size,
+												  t_list **desired_pool);
 
 void				recost_desired_pool(t_list **desired_pool, t_list *stack_a,
 										unsigned int stack_size);
 
 void				move_to_b(t_list **A, t_list **B,
 							  t_element_to_move next_elem);
+
+
+
+
+t_element_to_move	choose_next_elem_first_step(t_list **desired_pool);
+
+void	index_desired_pool_for_b(t_list **desired_pool, t_list *stack_a);
+void	move_to_a(t_list **A, t_list **B, t_element_to_move next_elem);
 
 
 t_list	*parser(char **str);

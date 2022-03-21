@@ -1,11 +1,11 @@
 #include "push_swap.h"
 
-unsigned int		find_num_pool_nodes(unsigned int len_stack)
+unsigned int	find_num_pool_nodes(unsigned int len_stack)
 {
 	unsigned int	perfect_len;
-	unsigned int 	deep;
+	unsigned int	deep;
 
-	deep = 7;
+	deep = 14;
 	if (len_stack < 100)
 		return (4);
 	perfect_len = len_stack / deep;
@@ -14,8 +14,8 @@ unsigned int		find_num_pool_nodes(unsigned int len_stack)
 	return (perfect_len);
 }
 
-unsigned int		find_perfect_len_desired_pool(unsigned int stack_size,
-												  unsigned int num_pool_node)
+unsigned int	find_perfect_len_desired_pool(unsigned int stack_size,
+												unsigned int num_pool_node)
 {
 	unsigned int	fact_deep;
 	double			perfect_len;
@@ -24,12 +24,12 @@ unsigned int		find_perfect_len_desired_pool(unsigned int stack_size,
 	if (fact_deep % 2)
 		fact_deep--;
 	perfect_len = fact_deep;
-	perfect_len += (perfect_len / 100) * (0.7 * stack_size);
+	perfect_len += (perfect_len / 100) * (0.3 * stack_size);
 	return (perfect_len);
 }
 
-int					is_resize_need(unsigned int stack_size,
-									  unsigned int num_pool_nodes)
+int	is_resize_need(unsigned int stack_size,
+									unsigned int num_pool_nodes)
 {
 	size_t	perfect_len;
 
