@@ -1,4 +1,4 @@
-#include "../push_swap.h"
+#include "push_swap.h"
 
 int	first_step(t_list **stack_a, t_list **stack_b, unsigned int stack_size)
 {
@@ -21,12 +21,12 @@ int	first_step(t_list **stack_a, t_list **stack_b, unsigned int stack_size)
 		if (is_resize_need(stack_size, num_pool_nodes))
 			num_pool_nodes = resize_desired_pool(&desired_pool, num_pool_nodes);
 	}
-	pb(stack_a, stack_b);
+	pb(stack_a, stack_b, 1);
 	ft_lstclear(&desired_pool, free);
 	return (0);
 }
 
-int second_step(t_list **stack_a, t_list **stack_b, unsigned int stack_size)
+int	second_step(t_list **stack_a, t_list **stack_b, unsigned int stack_size)
 {
 	t_element_to_move	next_elem;
 	t_list				*desired_pool;
@@ -40,7 +40,7 @@ int second_step(t_list **stack_a, t_list **stack_b, unsigned int stack_size)
 	while (*stack_b)
 	{
 		next_elem = choose_next_elem_second_step(*stack_b, stack_size,
-												 &desired_pool);
+				&desired_pool);
 		move_to_a(stack_a, stack_b, next_elem);
 		stack_size--;
 	}

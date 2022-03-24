@@ -40,23 +40,23 @@ typedef struct s_element_to_move
 
 ps_node	*ft_nodenew(int content);
 
-int sa(t_list **stack_a);
-int sb(t_list **stack_b);
-int ss(t_list **stack_a, t_list **stack_b);
+int sa(t_list **stack_a, int print);
+int sb(t_list **stack_b, int print);
+int ss(t_list **stack_a, t_list **stack_b, int print);
 
-int ra(t_list **stack_a);
-int rb(t_list **stack_b);
-int rr(t_list **stack_a, t_list **stack_b);
+int ra(t_list **stack_a, int print);
+int rb(t_list **stack_b, int print);
+int rr(t_list **stack_a, t_list **stack_b, int print);
 
-int rra(t_list **stack_a);
-int rrb(t_list **stack_b);
-int rrr(t_list **stack_a, t_list **stack_b);
+int rra(t_list **stack_a, int print);
+int rrb(t_list **stack_b, int print);
+int rrr(t_list **stack_a, t_list **stack_b, int print);
 
-int	pa(t_list **stack_a, t_list **stack_b);
-int pb(t_list **stack_a, t_list **stack_b);
+int	pa(t_list **stack_a, t_list **stack_b, int print);
+int pb(t_list **stack_a, t_list **stack_b, int print);
 
-
-void	make_index(t_list **S);
+void	check_argum(char **str);
+void	make_index(t_list **stack);
 
 
 t_list			*init_desired_pool(unsigned int num_pool_nodes);
@@ -100,7 +100,7 @@ t_element_to_move	choose_next_elem_second_step(t_list *stack_b,
 void				recost_desired_pool(t_list **desired_pool, t_list *stack_a,
 										unsigned int stack_size);
 
-void				move_to_b(t_list **A, t_list **B,
+void				move_to_b(t_list **st_a, t_list **st_b,
 							  t_element_to_move next_elem);
 
 
@@ -114,7 +114,6 @@ void	move_to_a(t_list **A, t_list **B, t_element_to_move next_elem);
 
 t_list	*parser(char **str);
 
-char	*get_next_line(int fd);
 
 
 
@@ -127,8 +126,8 @@ int big_sort(t_list **stack_a, t_list **stack_b);
 
 
 void	print_index_list(t_list *S);
+void	print_content_list(t_list *S);
 void	print_two_stack(t_list *A, t_list *B);
 
-int		is_ascending(t_list *stack);
 
 #endif

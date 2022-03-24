@@ -2,7 +2,7 @@
 
 unsigned int	find_min_index(t_list *stack_a)
 {
-	unsigned int min_index;
+	unsigned int	min_index;
 
 	min_index = ((ps_node *)stack_a->content)->index;
 	stack_a = stack_a->next;
@@ -15,7 +15,7 @@ unsigned int	find_min_index(t_list *stack_a)
 	return (min_index);
 }
 
-void			cancel_delta(t_list **stack_a, unsigned int delta)
+void	cancel_delta(t_list **stack_a, unsigned int delta)
 {
 	t_list	*tmp_list;
 
@@ -27,22 +27,22 @@ void			cancel_delta(t_list **stack_a, unsigned int delta)
 	}
 }
 
-void			five_sort_cases(t_list **stack_b, t_list **tmp_list)
+void	five_sort_cases(t_list **stack_b, t_list **tmp_list)
 {
 	t_list	*tmp_loc;
 
 	tmp_loc = *tmp_list;
-	pa (&tmp_loc, stack_b);
+	pa (&tmp_loc, stack_b, 1);
 	if (((ps_node *)tmp_loc->content)->index == 5)
-		ra(&tmp_loc);
-	pa (&tmp_loc, stack_b);
+		ra(&tmp_loc, 1);
+	pa (&tmp_loc, stack_b, 1);
 	if (((ps_node *)tmp_loc->content)->index == 5)
-		ra(&tmp_loc);
+		ra(&tmp_loc, 1);
 	if (((ps_node *)tmp_loc->content)->index == 2)
-		sa(&tmp_loc);
+		sa(&tmp_loc, 1);
 }
 
-int				five_sort(t_list **stack_a, t_list **stack_b)
+int	five_sort(t_list **stack_a, t_list **stack_b)
 {
 	t_list			*tmp_list;
 	unsigned int	len_stack;
@@ -52,14 +52,16 @@ int				five_sort(t_list **stack_a, t_list **stack_b)
 	len_stack = 5;
 	delta = find_min_index(tmp_list) - 1;
 	while (len_stack > 3)
-		if (((ps_node *)tmp_list->content)->index != 3
-			&& ((ps_node *)tmp_list->content)->index != 4)
+	{
+		if (((ps_node *) tmp_list->content)->index != 3
+			&& ((ps_node *) tmp_list->content)->index != 4)
 		{
-			pb(&tmp_list, stack_b);
+			pb(&tmp_list, stack_b, 1);
 			len_stack--;
 		}
 		else
-			ra(&tmp_list);
+			ra(&tmp_list, 1);
+	}
 	three_sort(&tmp_list);
 	five_sort_cases(stack_b, &tmp_list);
 	cancel_delta(&tmp_list, delta);

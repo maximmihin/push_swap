@@ -15,24 +15,27 @@ int	sl(t_list **stack)
 	return (0);
 }
 
-int	sa(t_list **stack_a)
+int	sa(t_list **stack_a, int print)
 {
 	sl(stack_a);
-	write(1, "sa\n", 3);
+	if (print)
+		write(1, "sa\n", 3);
 	return (0);
 }
 
-int sb(t_list **stack_b)
+int sb(t_list **stack_b, int print)
 {
 	sl(stack_b);
-	write(1, "sb\n", 3);
+	if (print)
+		write(1, "sb\n", 3);
 	return (0);
 }
 
-int ss(t_list **stack_a, t_list **stack_b)
+int ss(t_list **stack_a, t_list **stack_b, int print)
 {
 	sl(stack_a);
 	sl(stack_b);
-	write(1, "ss\n", 3);
+	if (print)
+		write(1, "ss\n", 3);
 	return (0);
 }

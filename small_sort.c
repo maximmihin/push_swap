@@ -1,10 +1,10 @@
 #include "push_swap.h"
 
-int				three_sort(t_list **stack)
+int	three_sort(t_list **stack)
 {
 	int				val[3];
 	unsigned int	i;
-	t_list 			*list_tmp;
+	t_list			*list_tmp;
 
 	list_tmp = *stack;
 	i = 0;
@@ -15,36 +15,36 @@ int				three_sort(t_list **stack)
 		i++;
 	}
 	if (val[0] > val[1] && val[0] < val[2] && val[1] < val [2])
-		return (sa(stack));
+		return (sa(stack, 1));
 	if (val[0] > val[1] && val[0] > val[2] && val[1] > val[2])
-		return (sa(stack) +	rra(stack));
+		return (sa(stack, 1) + rra(stack, 1));
 	if (val[0] > val[1] && val[0] > val[2] && val[1] < val[2])
-		return (ra(stack));
+		return (ra(stack, 1));
 	if (val[0] < val[1] && val[0] < val[2] && val[1] > val[2])
-		return (sa(stack) + ra(stack));
+		return (sa(stack, 1) + ra(stack, 1));
 	if (val[0] < val[1] && val[0] > val[2] && val[1] > val[2])
-		return (rra(stack));
+		return (rra(stack, 1));
 	return (1);
 }
 
-int				four_sort(t_list **stack_a, t_list **stack_b)
+int	four_sort(t_list **stack_a, t_list **stack_b)
 {
 	t_list	*tmp_list;
 
-	make_index(stack_a);
-	pb(stack_a, stack_b);
+	pb(stack_a, stack_b, 1);
 	three_sort(stack_a);
 	tmp_list = *stack_b;
 	if (((ps_node *)tmp_list->content)->index == 2)
-		return (pa(stack_a, stack_b) + sa(stack_a));
+		return (pa(stack_a, stack_b, 1) + sa(stack_a, 1));
 	if (((ps_node *)tmp_list->content)->index == 3)
-		return (rra(stack_a) + pa(stack_a, stack_b) + ra(stack_a) + ra(stack_a));
+		return (rra(stack_a, 1) + pa(stack_a, stack_b, 1)
+			+ ra(stack_a, 1) + ra(stack_a, 1));
 	if (((ps_node *)tmp_list->content)->index == 4)
-		return (pa(stack_a, stack_b) + ra(stack_a));
-	return (pa(stack_a, stack_b));
+		return (pa(stack_a, stack_b, 1) + ra(stack_a, 1));
+	return (pa(stack_a, stack_b, 1));
 }
 
-int				small_sort(t_list **stack_a, t_list **stack_b, int argc)
+int	small_sort(t_list **stack_a, t_list **stack_b, int argc)
 {
 	t_list	*list_tmp;
 
@@ -52,7 +52,7 @@ int				small_sort(t_list **stack_a, t_list **stack_b, int argc)
 	if (argc == 3)
 		if (((ps_node *)list_tmp->content)->content
 			> ((ps_node *)list_tmp->next->content)->content)
-			return (sa(&list_tmp));
+			return (sa(&list_tmp, 1));
 	if (argc == 4)
 		return (three_sort(&list_tmp));
 	if (argc == 5)

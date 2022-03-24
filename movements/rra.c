@@ -12,24 +12,27 @@ int	rrl(t_list **stack)
 	return (0);
 }
 
-int	rra(t_list **stack_a)
+int	rra(t_list **stack_a, int print)
 {
 	rrl(stack_a);
-	write(1, "rra\n", 4);
+	if (print)
+		write(1, "rra\n", 4);
 	return (0);
 }
 
-int	rrb(t_list **stack_b)
+int	rrb(t_list **stack_b, int print)
 {
 	rrl(stack_b);
-	write(1, "rrb\n", 4);
+	if (print)
+		write(1, "rrb\n", 4);
 	return (0);
 }
 
-int	rrr(t_list **stack_a, t_list **stack_b)
+int	rrr(t_list **stack_a, t_list **stack_b, int print)
 {
 	rrl(stack_a);
 	rrl(stack_b);
-	write(1, "rrr\n", 4);
+	if (print)
+		write(1, "rrr\n", 4);
 	return (0);
 }

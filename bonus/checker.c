@@ -12,29 +12,48 @@ void	apply_commands(t_list **stack_a, t_list **stack_b, char ***moves)
 	while (moves[i])
 	{
 		if (!ft_strncmp(tmp_moves[i], "sa\0", 3))
-			sa(stack_a);
+			sa(stack_a, 0);
 		else if (!ft_strncmp(tmp_moves[i], "sb\0", 3))
-			sb(stack_b);
+			sb(stack_b, 0);
 		else if (!ft_strncmp(tmp_moves[i], "ss\0", 3))
-			ss(stack_a, stack_b);
+			ss(stack_a, stack_b, 0);
 		else if (!ft_strncmp(tmp_moves[i], "ra\0", 3))
-			ra(stack_a);
+			ra(stack_a, 0);
 		else if (!ft_strncmp(tmp_moves[i], "rb\0", 3))
-			rb(stack_b);
+			rb(stack_b, 0);
 		else if (!ft_strncmp(tmp_moves[i], "rr\0", 3))
-			rr(stack_a, stack_b);
+			rr(stack_a, stack_b, 0);
 		else if (!ft_strncmp(tmp_moves[i], "rra\0", 4))
-			rra(stack_a);
+			rra(stack_a, 0);
 		else if (!ft_strncmp(tmp_moves[i], "rrb\0", 4))
-			rrb(stack_b);
+			rrb(stack_b, 0);
 		else if (!ft_strncmp(tmp_moves[i], "rrr\0", 4))
-			rrr(stack_a, stack_b);
+			rrr(stack_a, stack_b, 0);
 		else if (!ft_strncmp(tmp_moves[i], "pa\0", 3))
-			pa(stack_a, stack_b);
+			pa(stack_a, stack_b, 0);
 		else if (!ft_strncmp(tmp_moves[i], "pb\0", 3))
-			pb(stack_a, stack_b);
+			pb(stack_a, stack_b, 0);
 		i++;
 	}
+}
+
+int		is_ascending(t_list *stack)
+{
+	ps_node			*ps_tmp;
+	unsigned int	index_tmp;
+
+	ps_tmp = (ps_node *)stack->content;
+	index_tmp = ps_tmp->index;
+	stack = stack->next;
+	while (stack)
+	{
+		ps_tmp = (ps_node *)stack->content;
+		if (index_tmp + 1 != ps_tmp->index)
+			return (0);
+		index_tmp = ps_tmp->index;
+		stack = stack->next;
+	}
+	return (1);
 }
 
 int	main (int argc, char **argv)
@@ -61,6 +80,7 @@ int	main (int argc, char **argv)
 
 	moves = ft_split(all_moves, '\n');
 	stack_a = parser(argv);
+	//обработать ошибку
 	apply_commands(&stack_a, &stack_b, &moves);
 	if (is_ascending(stack_a))
 		write(1, "OK\n", 3);

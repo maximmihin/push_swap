@@ -1,12 +1,12 @@
 #include "push_swap.h"
 
-unsigned int		find_next_top(t_list *desired_pool)
+unsigned int	find_next_top(t_list *desired_pool)
 {
-	unsigned int		max_in_top;
+	unsigned int	max_in_top;
 
 	max_in_top = ((t_pool_node *)desired_pool->content)->index;
 	while (((t_pool_node *)desired_pool->content)->bottom_top == 'T'
-		   || ((t_pool_node *)desired_pool->content)->bottom_top == 't')
+		|| ((t_pool_node *)desired_pool->content)->bottom_top == 't')
 	{
 		if (((t_pool_node *)desired_pool->content)->bottom_top == 't')
 		{
@@ -14,11 +14,12 @@ unsigned int		find_next_top(t_list *desired_pool)
 			while (desired_pool)
 			{
 				if (((t_pool_node *)desired_pool->content)->index < max_in_top
-					&& ((t_pool_node *)desired_pool->content)->bottom_top == 't')
-					max_in_top = ((t_pool_node *)desired_pool->content)->index;
+					&& ((t_pool_node *)desired_pool->content)->bottom_top
+					== 't')
+				max_in_top = ((t_pool_node *)desired_pool->content)->index;
 				desired_pool = desired_pool->next;
 			}
-			break;
+			break ;
 		}
 		if (((t_pool_node *)desired_pool->content)->index > max_in_top)
 			max_in_top = ((t_pool_node *)desired_pool->content)->index;
@@ -27,12 +28,13 @@ unsigned int		find_next_top(t_list *desired_pool)
 	return (max_in_top);
 }
 
-unsigned int		find_next_bottom(t_list *desired_pool)
+unsigned int	find_next_bottom(t_list *desired_pool)
 {
-	unsigned int		min_in_bottom;
+	unsigned int	min_in_bottom;
+	t_pool_node		*tmp;
 
 	while (((t_pool_node *)desired_pool->content)->bottom_top == 'T'
-		   || ((t_pool_node *)desired_pool->content)->bottom_top == 't')
+		|| ((t_pool_node *)desired_pool->content)->bottom_top == 't')
 		desired_pool = desired_pool->next;
 	min_in_bottom = ((t_pool_node *)desired_pool->content)->index;
 	while (desired_pool)
@@ -42,12 +44,12 @@ unsigned int		find_next_bottom(t_list *desired_pool)
 			min_in_bottom = ((t_pool_node *)desired_pool->content)->index;
 			while (desired_pool)
 			{
-				if (((t_pool_node *)desired_pool->content)->index > min_in_bottom
-					&& ((t_pool_node *)desired_pool->content)->bottom_top == 'b')
-					min_in_bottom = ((t_pool_node *)desired_pool->content)->index;
+				tmp = ((t_pool_node *)desired_pool->content);
+				if (tmp->index > min_in_bottom && tmp->bottom_top == 'b')
+					min_in_bottom = tmp->index;
 				desired_pool = desired_pool->next;
 			}
-			break;
+			break ;
 		}
 		if (((t_pool_node *)desired_pool->content)->index < min_in_bottom)
 			min_in_bottom = ((t_pool_node *)desired_pool->content)->index;
@@ -56,7 +58,7 @@ unsigned int		find_next_bottom(t_list *desired_pool)
 	return (min_in_bottom);
 }
 
-void				del_pool_node(t_list **desired_pool, t_list **node_to_del)
+void	del_pool_node(t_list **desired_pool, t_list **node_to_del)
 {
 	t_list	*tmp_desired_pool;
 	t_list	*tmp_node_to_del;
@@ -76,8 +78,8 @@ void				del_pool_node(t_list **desired_pool, t_list **node_to_del)
 	ft_lstdelone(tmp_node_to_del, free);
 }
 
-int					del_waste_pool_node(t_list **desired_pool,
-										   unsigned int waste_index)
+int	del_waste_pool_node(t_list **desired_pool,
+						unsigned int waste_index)
 {
 	t_list		*tmp_desired_pool;
 	t_pool_node	*tmp_pool_node;
@@ -98,15 +100,15 @@ int					del_waste_pool_node(t_list **desired_pool,
 	return (0);
 }
 
-t_list				*find_used_pool_node(t_list **desired_pool)
+t_list	*find_used_pool_node(t_list **desired_pool)
 {
-	t_list				*tmp_desired_pool;
+	t_list	*tmp_desired_pool;
 
 	tmp_desired_pool = *desired_pool;
 	while (tmp_desired_pool)
 	{
 		if (((t_pool_node *)tmp_desired_pool->content)->gate == 'R')
-			break;
+			break ;
 		tmp_desired_pool = tmp_desired_pool->next;
 	}
 	return (tmp_desired_pool);

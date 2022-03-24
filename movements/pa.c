@@ -15,16 +15,18 @@ int	pl(t_list **stack_a, t_list **stack_b)
 	return (0);
 }
 
-int	pa(t_list **stack_a, t_list **stack_b)
+int	pa(t_list **stack_a, t_list **stack_b, int print)
 {
 	pl(stack_a, stack_b);
-	write(1, "pa\n", 3);
+	if (print)
+		write(1, "pa\n", 3);
 	return (0);
 }
 
-int	pb(t_list **stack_a, t_list **stack_b)
+int	pb(t_list **stack_a, t_list **stack_b, int print)
 {
 	pl(stack_b, stack_a);
-	write(1, "pb\n", 3);
+	if (print)
+		write(1, "pb\n", 3);
 	return (0);
 }

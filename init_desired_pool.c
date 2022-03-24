@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-t_pool_node		*pool_node_new(unsigned int index)
+t_pool_node	*pool_node_new(unsigned int index)
 {
 	t_pool_node	*pool_node;
 
@@ -11,7 +11,7 @@ t_pool_node		*pool_node_new(unsigned int index)
 	return (pool_node);
 }
 
-t_list			*create_desired_pool(unsigned int	num_pool_nodes)
+t_list	*create_desired_pool(unsigned int num_pool_nodes)
 {
 	t_list			*desired_pool;
 	t_list			*tmp_list;
@@ -38,7 +38,7 @@ t_list			*create_desired_pool(unsigned int	num_pool_nodes)
 	return (desired_pool);
 }
 
-void			mark_desired_pool(t_list **desired_pool, unsigned int num_pool_nodes)
+void	mark_desired_pool(t_list **desired_pool, unsigned int num_pool_nodes)
 {
 	t_list			*tmp_desired_pool;
 	unsigned int	i;
@@ -59,9 +59,9 @@ void			mark_desired_pool(t_list **desired_pool, unsigned int num_pool_nodes)
 	}
 }
 
-void			index_desired_pool_for_a(t_list **desired_pool,
-										 unsigned int num_pool_nodes,
-										 unsigned int stack_size)
+void	index_desired_pool_for_a(t_list **desired_pool,
+								unsigned int num_pool_nodes,
+								unsigned int stack_size)
 {
 	t_list			*tmp_desired_pool;
 	unsigned int	i;
@@ -83,7 +83,7 @@ void			index_desired_pool_for_a(t_list **desired_pool,
 	}
 }
 
-t_list			*init_desired_pool(unsigned int num_pool_nodes)
+t_list	*init_desired_pool(unsigned int num_pool_nodes)
 {
 	t_list			*desired_pool;
 

@@ -1,102 +1,43 @@
 #include "push_swap.h"
 
-int		check_non_numeric_symbols(char **str)
+ps_node	*ft_nodenew(int content)
 {
-	size_t	i;
-	size_t	j;
+	ps_node	*elem;
 
-	i = 1;
-	j = 0;
-	while (str[i] && str[i][j])
-	{
-		while (str[i][j])
-		{
-			if (!(str[i][j] == '-' || ft_isdigit(str[i][j])))
-				return (1);
-			++j;
-		}
-		++i;
-		j = 0;
-	}
-	return (0);
-}
-
-size_t	ft_arrlen(char **arr)
-{
-	size_t i;
-
-	i = 0;
-	while (arr[i])
-		i++;
-	return (i);
-}
-
-int		check_double(char **str)
-{
-	size_t len_arr;
-	size_t *nums;
-	int i;
-	size_t j;
-
-	len_arr = ft_arrlen(str);
-	nums = (size_t *) malloc(sizeof(size_t) * (len_arr + 1));
-	if (!nums)
-		return (1);
-	i = -1;
-	while (++i < (int)len_arr)
-		nums[i] = ft_strlen(str[i]);
-	i = 0;
-	j = 0;
-	while (i < (int)len_arr)
-	{
-		while (++j < len_arr)
-			if (nums[i] == nums[j] && !(ft_strncmp(str[i], str[j], nums[i])))
-				return (1);
-		i++;
-		j = i;
-	}
-	free(nums);
-	return (0);
-}
-
-void 	bzero_del(t_list **list)
-{
-	t_list	*tmp_list;
-
-	tmp_list = *list;
-
-	while (tmp_list)
-	{
-		((ps_node *)tmp_list->content)->del = 'N';
-		tmp_list = tmp_list->next;
-	}
+	elem = (ps_node *) malloc(sizeof(ps_node));
+	if (!elem)
+		return (NULL);
+	elem->content = content;
+	elem->index = 0;
+	elem->mark = 'F';
+	return (elem);
 }
 
 t_list	*parser(char **str)
 {
-	t_list	*list;
-	size_t	i;
+	t_list			*list;
+	t_list			*tmp_list;
+	ps_node			*node;
+	unsigned int	i;
 
-	if (check_non_numeric_symbols(str))
-	{
-		printf("find non-numeric symbols\n");
+	node = ft_nodenew(ft_atoi(str[1]));
+	if (!node)
 		return (NULL);
-	}
-
-	if (check_double(str))
-	{
-		printf("find doubles\n");
+	list = ft_lstnew(node);
+	if (!list)
 		return (NULL);
-	}
-
-	///make list
-	list = ft_lstnew(ft_nodenew(ft_atoi(str[1])));
 	i = 2;
 	while (str[i])
-		ft_lstadd_back(&list, ft_lstnew(ft_nodenew(ft_atoi(str[i++]))));
-
+	{
+		node = ft_nodenew(ft_atoi(str[i]));
+		if (!node)
+			return (NULL);
+		tmp_list = ft_lstnew(node);
+		if (!tmp_list)
+			return (NULL);
+		ft_lstadd_back(&list, tmp_list);
+		i++;
+	}
 	make_index(&list);
-	bzero_del(&list);
-
 	return (list);
 }

@@ -1,8 +1,8 @@
 #include "push_swap.h"
 
 t_element_to_move	choose_next_elem_second_step(t_list *stack_b,
-												  unsigned int stack_size,
-												  t_list **desired_pool)
+												unsigned int stack_size,
+												t_list **desired_pool)
 {
 	t_element_to_move	next_elem;
 	t_list				*bottom_desired_pool;
@@ -29,7 +29,7 @@ t_element_to_move	choose_next_elem_second_step(t_list *stack_b,
 	return (next_elem);
 }
 
-void				index_desired_pool_for_b(t_list **desired_pool, t_list *stack_a)
+void	index_desired_pool_for_b(t_list **desired_pool, t_list *stack_a)
 {
 	unsigned int	median;
 	t_list			*tmp_desired_pool;
@@ -40,27 +40,29 @@ void				index_desired_pool_for_b(t_list **desired_pool, t_list *stack_a)
 	((t_pool_node *)tmp_desired_pool->next->content)->index = median - 1;
 }
 
-void				move_to_a(t_list **A, t_list **B, t_element_to_move next_elem)
+void	move_to_a(t_list **A, t_list **B, t_element_to_move next_elem)
 {
 	t_list	*tmp_a;
 
 	if (next_elem.gate == 'T')
+	{
 		while (next_elem.cost)
 		{
-			rb(B);
+			rb(B, 1);
 			next_elem.cost--;
 		}
+	}
 	else if (next_elem.gate == 'B')
+	{
 		while (next_elem.cost)
 		{
-			rrb(B);
+			rrb(B, 1);
 			next_elem.cost--;
 		}
-	pa(A, B);
+	}
+	pa(A, B, 1);
 	tmp_a = *A;
 	if (((ps_node *)tmp_a->content)->index
 		> ((ps_node *)tmp_a->next->content)->index)
-		ra(A);
+		ra(A, 1);
 }
-
-
