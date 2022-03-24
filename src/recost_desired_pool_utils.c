@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
 unsigned int	find_next_top(t_list *desired_pool)
 {
@@ -36,7 +36,6 @@ unsigned int	find_next_bottom(t_list *desired_pool)
 	while (((t_pool_node *)desired_pool->content)->bottom_top == 'T'
 		|| ((t_pool_node *)desired_pool->content)->bottom_top == 't')
 		desired_pool = desired_pool->next;
-	min_in_bottom = ((t_pool_node *)desired_pool->content)->index;
 	while (desired_pool)
 	{
 		if (((t_pool_node *)desired_pool->content)->bottom_top == 'b')

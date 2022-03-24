@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
 unsigned int	find_pos(t_list *stack, unsigned int index)
 {

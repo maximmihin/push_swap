@@ -1,10 +1,8 @@
 #ifndef FT_PUSH_SWAP_H
 # define FT_PUSH_SWAP_H
 
-//del
-#include <stdio.h>
-
-# include "libft/libft.h"
+# include "../libft/libft.h"
+# include "./movements.h"
 
 typedef struct ps_node
 {
@@ -40,20 +38,7 @@ typedef struct s_element_to_move
 
 ps_node	*ft_nodenew(int content);
 
-int sa(t_list **stack_a, int print);
-int sb(t_list **stack_b, int print);
-int ss(t_list **stack_a, t_list **stack_b, int print);
 
-int ra(t_list **stack_a, int print);
-int rb(t_list **stack_b, int print);
-int rr(t_list **stack_a, t_list **stack_b, int print);
-
-int rra(t_list **stack_a, int print);
-int rrb(t_list **stack_b, int print);
-int rrr(t_list **stack_a, t_list **stack_b, int print);
-
-int	pa(t_list **stack_a, t_list **stack_b, int print);
-int pb(t_list **stack_a, t_list **stack_b, int print);
 
 void	check_argum(char **str);
 void	make_index(t_list **stack);
@@ -123,11 +108,6 @@ int	small_sort(t_list **stack_a, t_list **stack_b, int argc);
 
 int big_sort(t_list **stack_a, t_list **stack_b);
 
-
-
-void	print_index_list(t_list *S);
-void	print_content_list(t_list *S);
-void	print_two_stack(t_list *A, t_list *B);
 
 
 #endif

@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
 int	first_step(t_list **stack_a, t_list **stack_b, unsigned int stack_size)
 {

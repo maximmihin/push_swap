@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
 t_list	*find_max_top_node(t_list **desired_pool)
 {
@@ -12,7 +12,7 @@ t_list	*find_max_top_node(t_list **desired_pool)
 	max_pool_node = (t_pool_node *)max_top_node->content;
 	max_val = max_pool_node->index;
 	while (((t_pool_node *)tmp_desired_pool->content)->bottom_top == 'T'
-		   || ((t_pool_node *)tmp_desired_pool->content)->bottom_top == 't')
+		|| ((t_pool_node *)tmp_desired_pool->content)->bottom_top == 't')
 	{
 		if (((t_pool_node *)tmp_desired_pool->content)->index > max_val
 			&& ((t_pool_node *)tmp_desired_pool->content)->bottom_top == 'T')
@@ -35,7 +35,7 @@ t_list	*find_min_bottom_node(t_list **desired_pool)
 
 	tmp_desired_pool = *desired_pool;
 	while (((t_pool_node *)tmp_desired_pool->content)->bottom_top == 'T'
-		   || ((t_pool_node *)tmp_desired_pool->content)->bottom_top == 't')
+		|| ((t_pool_node *)tmp_desired_pool->content)->bottom_top == 't')
 		tmp_desired_pool = tmp_desired_pool->next;
 	min_bottom_node = tmp_desired_pool;
 	min_pool_node = (t_pool_node *)min_bottom_node->content;
@@ -70,8 +70,8 @@ void	hide_pool_bottom_min(t_list **desired_pool)
 	((t_pool_node *)min_bottom->content)->bottom_top = 'b';
 }
 
-int		resize_desired_pool(t_list **desired_pool,
-							   unsigned int num_pool_nodes)
+int	resize_desired_pool(t_list **desired_pool,
+							unsigned int num_pool_nodes)
 {
 	hide_pool_top_max(desired_pool);
 	hide_pool_bottom_min(desired_pool);

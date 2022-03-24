@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
 t_element_to_move	choose_next_elem_second_step(t_list *stack_b,
 												unsigned int stack_size,

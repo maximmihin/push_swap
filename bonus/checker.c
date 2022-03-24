@@ -1,5 +1,5 @@
-#include "push_swap.h"
-#include "get_next_line.h"
+#include "includes/push_swap.h"
+#include "includes/get_next_line.h"
 
 void	apply_commands(t_list **stack_a, t_list **stack_b, char ***moves)
 {

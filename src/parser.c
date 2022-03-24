@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "../includes/push_swap.h"
 
 ps_node	*ft_nodenew(int content)
 {
