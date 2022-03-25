@@ -65,15 +65,16 @@ void	free_argum(char **argum)
 	free(argum);
 }
 
-t_list	*parser(int argc, char **argv)
+t_list	*parser(int *argc, char **argv)
 {
 	t_list	*stack;
 	char	**argum;
 
-	if (argc == 2 && ft_strchr(argv[1], ' '))
+	if (*argc == 2 && ft_strchr(argv[1], ' '))
 	{
 		argum = ft_split(argv[1], ' ');
 		check_argum(argum);
+		*argc = (int) ft_arrlen((void **)argum) + 1;
 		stack = arr_to_list(argum);
 		free_argum(argum);
 	}

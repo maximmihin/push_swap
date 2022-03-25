@@ -37,73 +37,69 @@ typedef struct s_element_to_move
 	unsigned int	index;
 	char			gate;
 	unsigned int	cost;
-	unsigned int	index_next;
-	char			gate_next;
 }	t_element_to_move;
 
+t_list				*parser(int *argc, char **argv);
 
+void				check_argum(char **argv);
 
+size_t				ft_arrlen(void **arr);
 
-t_list	*parser(int argc, char **argv);
+void				make_index(t_list **stack);
 
-void	check_argum(char **argv);
+int					is_ascending(t_list *stack);
 
-void	make_index(t_list **stack);
+t_list				*init_desired_pool(unsigned int num_pool_nodes);
 
-int		is_ascending(t_list *stack);
-
-t_list			*init_desired_pool(unsigned int num_pool_nodes);
-
-void			index_desired_pool_for_a(t_list **desired_pool,
-										 unsigned int num_pool_nodes,
-										 unsigned int stack_size);
+void				index_desired_pool_for_a(t_list **desired_pool,
+						unsigned int num_pool_nodes, unsigned int stack_size);
 
 void				calculate_all_costs(t_list **desired_pool, t_list *stack,
-										unsigned int stack_size);
+						unsigned int stack_size);
 
 unsigned int		find_cost_node(t_list **desired_pool, t_list *stack,
-								   size_t stack_size);
+						size_t stack_size);
 
 unsigned int		find_num_pool_nodes(unsigned int len_stack);
 
 int					is_resize_need(unsigned int stack_size,
-									  unsigned int num_pool_nodes);
+						unsigned int num_pool_nodes);
 
-int				resize_desired_pool(t_list **desired_pool,
-									   unsigned int num_pool_nodes);
+int					resize_desired_pool(t_list **desired_pool,
+						unsigned int num_pool_nodes);
 
 unsigned int		find_next_top(t_list *desired_pool);
 
 unsigned int		find_next_bottom(t_list *desired_pool);
 
-
 int					del_waste_pool_node(t_list **desired_pool,
-										   unsigned int waste_index);
+						unsigned int waste_index);
 
 t_list				*find_used_pool_node(t_list **desired_pool);
 
 t_element_to_move	choose_next_elem_second_step(t_list *stack_b,
-												  unsigned int stack_size,
-												  t_list **desired_pool);
+						unsigned int stack_size, t_list **desired_pool);
 
 void				recost_desired_pool(t_list **desired_pool, t_list *stack_a,
-										unsigned int stack_size);
+						unsigned int stack_size);
 
 void				move_to_b(t_list **st_a, t_list **st_b,
-							  t_element_to_move next_elem);
+						t_element_to_move next_elem);
 
 t_element_to_move	choose_next_elem_first_step(t_list **desired_pool);
 
-void	index_desired_pool_for_b(t_list **desired_pool, t_list *stack_a);
+void				index_desired_pool_for_b(t_list **desired_pool,
+						t_list *stack_a);
 
-void	move_to_a(t_list **A, t_list **B, t_element_to_move next_elem);
+void				move_to_a(t_list **A, t_list **B,
+						t_element_to_move next_elem);
 
-int	three_sort(t_list **S);
+int					three_sort(t_list **S);
 
-int	five_sort(t_list **stack_a, t_list **stack_b);
+int					five_sort(t_list **stack_a, t_list **stack_b);
 
-int	small_sort(t_list **stack_a, t_list **stack_b, int argc);
+int					small_sort(t_list **stack_a, t_list **stack_b, int argc);
 
-int big_sort(t_list **stack_a, t_list **stack_b);
+int					big_sort(t_list **stack_a, t_list **stack_b);
 
 #endif

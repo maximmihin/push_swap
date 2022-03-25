@@ -12,34 +12,6 @@
 
 #include "../includes/push_swap.h"
 
-/*
-void	print_index_list(t_list *S)
-{
-	t_node *ps_tmp;
-
-	while (S)
-	{
-		ps_tmp = S->content;
-		printf("%d ", ps_tmp->index);
-		S = S->next;
-	}
-	printf("\n");
-}
-
-void	print_content_list(t_list *S)
-{
-	t_node *ps_tmp;
-
-	while (S)
-	{
-		ps_tmp = S->content;
-		printf("%d ", ps_tmp->content);
-		S = S->next;
-	}
-	printf("\n");
-}
-*/
-
 int	main(int argc, char **argv)
 {
 	t_list	*stack_a;
@@ -47,7 +19,7 @@ int	main(int argc, char **argv)
 
 	if (argc == 1)
 		return (0);
-	stack_a = parser(argc, argv);
+	stack_a = parser(&argc, argv);
 	if (!stack_a)
 		return (0);
 	if (is_ascending(stack_a))
