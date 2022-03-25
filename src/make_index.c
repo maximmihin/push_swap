@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   make_index.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gradagas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/25 14:29:14 by gradagas          #+#    #+#             */
+/*   Updated: 2022/03/25 14:29:17 by gradagas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
 t_list	*find_index(t_list *stack, unsigned int index)
 {
-	ps_node	*ps_tmp;
+	t_node	*ps_tmp;
 
 	while (stack)
 	{
@@ -16,11 +28,11 @@ t_list	*find_index(t_list *stack, unsigned int index)
 
 t_list	*find_min_list(t_list *elem_one, t_list *elem_two)
 {
-	ps_node	*ps_a;
-	ps_node	*ps_b;
+	t_node	*ps_a;
+	t_node	*ps_b;
 
-	ps_a = (ps_node *)elem_one->content;
-	ps_b = (ps_node *)elem_two->content;
+	ps_a = (t_node *)elem_one->content;
+	ps_b = (t_node *)elem_two->content;
 	if (ps_a->index)
 		return (elem_two);
 	if (ps_b->index)
@@ -36,7 +48,7 @@ void	assign_index(t_list **stack, unsigned int index)
 	t_list	*tmp_stack;
 
 	tmp_stack = *stack;
-	((ps_node *)tmp_stack->content)->index = index;
+	((t_node *)tmp_stack->content)->index = index;
 }
 
 void	make_index(t_list **stack)

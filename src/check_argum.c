@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_argum.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gradagas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/25 14:30:09 by gradagas          #+#    #+#             */
+/*   Updated: 2022/03/25 14:30:12 by gradagas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
 int	check_non_numeric_symbols(char **str)
@@ -5,7 +17,7 @@ int	check_non_numeric_symbols(char **str)
 	size_t	i;
 	size_t	j;
 
-	i = 1;
+	i = 0;
 	j = 0;
 	while (str[i] && str[i][j])
 	{
@@ -35,7 +47,7 @@ int	check_double(char **str)
 {
 	size_t	len_arr;
 	size_t	*nums;
-	size_t	j;
+	int		j;
 	int		i;
 
 	len_arr = ft_arrlen((void **)str);
@@ -49,7 +61,7 @@ int	check_double(char **str)
 	j = 0;
 	while (i < (int)len_arr)
 	{
-		while (++j < len_arr)
+		while (++j < (int)len_arr)
 			if (nums[i] == nums[j] && !(ft_strncmp(str[i], str[j], nums[i])))
 				return (1);
 		i++;
@@ -66,7 +78,6 @@ int	check_max_min_int(char **str)
 	char			**tmp_str;
 	char			*sub_str;
 
-	str++;
 	tmp_str = str;
 	while (tmp_str && *tmp_str)
 	{
@@ -84,11 +95,11 @@ int	check_max_min_int(char **str)
 	return (0);
 }
 
-void	check_argum(char **str)
+void	check_argum(char **argv)
 {
-	if (check_non_numeric_symbols(str)
-		|| check_double(str)
-		|| check_max_min_int(str))
+	if (check_non_numeric_symbols(argv)
+		|| check_double(argv)
+		|| check_max_min_int(argv))
 	{
 		write(2, "error\n", 6);
 		exit(9);

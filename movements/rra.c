@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rra.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gradagas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/25 15:00:31 by gradagas          #+#    #+#             */
+/*   Updated: 2022/03/25 15:00:32 by gradagas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
 int	rrl(t_list **stack)
@@ -5,7 +17,7 @@ int	rrl(t_list **stack)
 	t_list	*tmp;
 
 	tmp = *stack;
-	while(tmp->next->next)
+	while (tmp->next->next)
 		tmp = tmp->next;
 	ft_lstadd_front(stack, tmp->next);
 	tmp->next = NULL;

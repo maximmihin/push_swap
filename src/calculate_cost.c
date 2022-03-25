@@ -1,14 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   calculate_cost.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gradagas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/25 14:29:39 by gradagas          #+#    #+#             */
+/*   Updated: 2022/03/25 14:29:41 by gradagas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
 unsigned int	find_pos(t_list *stack, unsigned int index)
 {
 	unsigned int	pos;
-	ps_node			*tmp_node;
+	t_node			*tmp_node;
 
 	pos = 1;
 	while (stack)
 	{
-		tmp_node = ((ps_node *)stack->content);
+		tmp_node = ((t_node *)stack->content);
 		if (tmp_node->index == index)
 			return (pos);
 		pos++;

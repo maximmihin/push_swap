@@ -1,18 +1,26 @@
-#ifndef FT_PUSH_SWAP_H
-# define FT_PUSH_SWAP_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gradagas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/25 21:14:44 by gradagas          #+#    #+#             */
+/*   Updated: 2022/03/25 21:14:48 by gradagas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PUSH_SWAP_H
+# define PUSH_SWAP_H
 
 # include "../libft/libft.h"
 # include "./movements.h"
 
-typedef struct ps_node
+typedef struct t_node
 {
-	char			min_max;
 	int				content;
-	unsigned int 	index;
-	unsigned int	stack_index;
-	char			mark;
-	char			del;
-}	ps_node;
+	unsigned int	index;
+}	t_node;
 
 typedef struct s_pool_node
 {
@@ -27,22 +35,22 @@ typedef struct s_element_to_move
 {
 	char			min_max;
 	unsigned int	index;
-	char		 	gate;
-	unsigned int 	cost;
-	unsigned int 	index_next;
-	char 			gate_next;
+	char			gate;
+	unsigned int	cost;
+	unsigned int	index_next;
+	char			gate_next;
 }	t_element_to_move;
 
 
 
 
-ps_node	*ft_nodenew(int content);
+t_list	*parser(int argc, char **argv);
 
+void	check_argum(char **argv);
 
-
-void	check_argum(char **str);
 void	make_index(t_list **stack);
 
+int		is_ascending(t_list *stack);
 
 t_list			*init_desired_pool(unsigned int num_pool_nodes);
 
@@ -50,13 +58,11 @@ void			index_desired_pool_for_a(t_list **desired_pool,
 										 unsigned int num_pool_nodes,
 										 unsigned int stack_size);
 
-
 void				calculate_all_costs(t_list **desired_pool, t_list *stack,
 										unsigned int stack_size);
 
 unsigned int		find_cost_node(t_list **desired_pool, t_list *stack,
 								   size_t stack_size);
-
 
 unsigned int		find_num_pool_nodes(unsigned int len_stack);
 
@@ -66,12 +72,10 @@ int					is_resize_need(unsigned int stack_size,
 int				resize_desired_pool(t_list **desired_pool,
 									   unsigned int num_pool_nodes);
 
-
 unsigned int		find_next_top(t_list *desired_pool);
 
 unsigned int		find_next_bottom(t_list *desired_pool);
 
-void				del_pool_node(t_list **desired_pool, t_list **node_to_del);
 
 int					del_waste_pool_node(t_list **desired_pool,
 										   unsigned int waste_index);
@@ -88,26 +92,18 @@ void				recost_desired_pool(t_list **desired_pool, t_list *stack_a,
 void				move_to_b(t_list **st_a, t_list **st_b,
 							  t_element_to_move next_elem);
 
-
-
-
 t_element_to_move	choose_next_elem_first_step(t_list **desired_pool);
 
 void	index_desired_pool_for_b(t_list **desired_pool, t_list *stack_a);
+
 void	move_to_a(t_list **A, t_list **B, t_element_to_move next_elem);
 
-
-t_list	*parser(char **str);
-
-
-
-
 int	three_sort(t_list **S);
+
 int	five_sort(t_list **stack_a, t_list **stack_b);
+
 int	small_sort(t_list **stack_a, t_list **stack_b, int argc);
 
 int big_sort(t_list **stack_a, t_list **stack_b);
-
-
 
 #endif

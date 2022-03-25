@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   five_sort.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gradagas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/25 14:32:47 by gradagas          #+#    #+#             */
+/*   Updated: 2022/03/25 14:32:50 by gradagas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
 unsigned int	find_min_index(t_list *stack_a)
 {
 	unsigned int	min_index;
 
-	min_index = ((ps_node *)stack_a->content)->index;
+	min_index = ((t_node *)stack_a->content)->index;
 	stack_a = stack_a->next;
 	while (stack_a)
 	{
-		if (((ps_node *)stack_a->content)->index < min_index)
-			min_index = ((ps_node *)stack_a->content)->index;
+		if (((t_node *)stack_a->content)->index < min_index)
+			min_index = ((t_node *)stack_a->content)->index;
 		stack_a = stack_a->next;
 	}
 	return (min_index);
@@ -22,7 +34,7 @@ void	cancel_delta(t_list **stack_a, unsigned int delta)
 	tmp_list = *stack_a;
 	while (tmp_list)
 	{
-		((ps_node *)tmp_list->content)->index += delta;
+		((t_node *)tmp_list->content)->index += delta;
 		tmp_list = tmp_list->next;
 	}
 }
@@ -33,12 +45,12 @@ void	five_sort_cases(t_list **stack_b, t_list **tmp_list)
 
 	tmp_loc = *tmp_list;
 	pa (&tmp_loc, stack_b, 1);
-	if (((ps_node *)tmp_loc->content)->index == 5)
+	if (((t_node *)tmp_loc->content)->index == 5)
 		ra(&tmp_loc, 1);
 	pa (&tmp_loc, stack_b, 1);
-	if (((ps_node *)tmp_loc->content)->index == 5)
+	if (((t_node *)tmp_loc->content)->index == 5)
 		ra(&tmp_loc, 1);
-	if (((ps_node *)tmp_loc->content)->index == 2)
+	if (((t_node *)tmp_loc->content)->index == 2)
 		sa(&tmp_loc, 1);
 }
 
@@ -53,8 +65,8 @@ int	five_sort(t_list **stack_a, t_list **stack_b)
 	delta = find_min_index(tmp_list) - 1;
 	while (len_stack > 3)
 	{
-		if (((ps_node *) tmp_list->content)->index != 3
-			&& ((ps_node *) tmp_list->content)->index != 4)
+		if (((t_node *) tmp_list->content)->index != 3
+			&& ((t_node *) tmp_list->content)->index != 4)
 		{
 			pb(&tmp_list, stack_b, 1);
 			len_stack--;

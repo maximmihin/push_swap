@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sa.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gradagas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/25 15:00:40 by gradagas          #+#    #+#             */
+/*   Updated: 2022/03/25 15:00:42 by gradagas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
 int	sl(t_list **stack)
@@ -23,7 +35,7 @@ int	sa(t_list **stack_a, int print)
 	return (0);
 }
 
-int sb(t_list **stack_b, int print)
+int	sb(t_list **stack_b, int print)
 {
 	sl(stack_b);
 	if (print)
@@ -31,7 +43,7 @@ int sb(t_list **stack_b, int print)
 	return (0);
 }
 
-int ss(t_list **stack_a, t_list **stack_b, int print)
+int	ss(t_list **stack_a, t_list **stack_b, int print)
 {
 	sl(stack_a);
 	sl(stack_b);

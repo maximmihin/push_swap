@@ -37,25 +37,6 @@ void	apply_commands(t_list **stack_a, t_list **stack_b, char ***moves)
 	}
 }
 
-int		is_ascending(t_list *stack)
-{
-	ps_node			*ps_tmp;
-	unsigned int	index_tmp;
-
-	ps_tmp = (ps_node *)stack->content;
-	index_tmp = ps_tmp->index;
-	stack = stack->next;
-	while (stack)
-	{
-		ps_tmp = (ps_node *)stack->content;
-		if (index_tmp + 1 != ps_tmp->index)
-			return (0);
-		index_tmp = ps_tmp->index;
-		stack = stack->next;
-	}
-	return (1);
-}
-
 int	main (int argc, char **argv)
 {
 	char	*moves_line;

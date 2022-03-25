@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   second_step_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gradagas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/25 14:33:19 by gradagas          #+#    #+#             */
+/*   Updated: 2022/03/25 14:33:23 by gradagas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
 t_element_to_move	choose_next_elem_second_step(t_list *stack_b,
@@ -35,7 +47,7 @@ void	index_desired_pool_for_b(t_list **desired_pool, t_list *stack_a)
 	t_list			*tmp_desired_pool;
 
 	tmp_desired_pool = *desired_pool;
-	median = ((ps_node *)stack_a->content)->index;
+	median = ((t_node *)stack_a->content)->index;
 	((t_pool_node *)tmp_desired_pool->content)->index = median + 1;
 	((t_pool_node *)tmp_desired_pool->next->content)->index = median - 1;
 }
@@ -62,7 +74,7 @@ void	move_to_a(t_list **A, t_list **B, t_element_to_move next_elem)
 	}
 	pa(A, B, 1);
 	tmp_a = *A;
-	if (((ps_node *)tmp_a->content)->index
-		> ((ps_node *)tmp_a->next->content)->index)
+	if (((t_node *)tmp_a->content)->index
+		> ((t_node *)tmp_a->next->content)->index)
 		ra(A, 1);
 }

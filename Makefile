@@ -26,7 +26,7 @@ OBJ = $(SRC:%.c= %.o)
 all : $(NAME)
 
 $(NAME) : $(OBJ) $(HEADER)
-	cd libft && make bonus && make
+#	cd libft && make bonus && make
 	$(CC) $(FLAGS) -O2 $(OBJ) libft/libft.a -o $(NAME)
 
 %.o	: %.c $(HEADER)
@@ -37,7 +37,7 @@ clean	:
 	@rm -f $(OBJ)
 
 fclean	:	clean
-	cd libft && make fclean
+#	cd libft && make fclean
 	@$(RM) $(NAME)
 
 #bonus	:

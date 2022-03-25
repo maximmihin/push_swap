@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   first_step_utils.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gradagas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/25 14:31:25 by gradagas          #+#    #+#             */
+/*   Updated: 2022/03/25 14:31:30 by gradagas         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/push_swap.h"
 
 t_element_to_move	get_next_elem(t_list *chosen_desired_pool_node)
@@ -87,7 +99,6 @@ void	move_to_b(t_list **st_a, t_list **st_b, t_element_to_move next_elem)
 	}
 	pb(st_a, st_b, 1);
 	tmp_b = *st_b;
-	((ps_node *)tmp_b->content)->min_max = next_elem.min_max;
 	if (next_elem.min_max == 'B' && tmp_b->next)
 		rb(st_b, 1);
 }
