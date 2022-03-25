@@ -8,7 +8,7 @@ include_directories(libft)
 include_directories(src)
 
 add_executable(push_swap src/big_sort.c
-        src/main.c includes/push_swap.h
+        src/push_swap.c includes/push_swap.h
         libft/libft.a libft/ft_lstnew.c
         libft/ft_lstadd_back.c libft/ft_lstlast.c
         libft/ft_lstadd_front.c libft/ft_lstsize.c
@@ -25,4 +25,5 @@ add_executable(push_swap src/big_sort.c
         src/five_sort.c src/small_sort.c src/init_desired_pool.c src/calculate_cost.c src/size_desired_pool.c src/resize_desired_pool.c src/recost_desired_pool_utils.c src/first_step_utils.c src/parser.c src/second_step_utils.c
         movements/pa.c movements/ra.c movements/rra.c movements/sa.c src/make_index.c
         src/check_argum.c includes/movements.h
+        includes/checker.h bonus/checker.c
         )
