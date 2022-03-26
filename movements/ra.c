@@ -19,11 +19,14 @@ int	rl(t_list **stack)
 	t_list	*s;
 
 	s = *stack;
-	tmp = s->next;
-	last = ft_lstlast(*stack);
-	s->next = NULL;
-	last->next = *stack;
-	*stack = tmp;
+	if (ft_lstsize(s) > 1)
+	{
+		tmp = s->next;
+		last = ft_lstlast(*stack);
+		s->next = NULL;
+		last->next = *stack;
+		*stack = tmp;
+	}
 	return (0);
 }
 

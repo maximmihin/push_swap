@@ -12,6 +12,12 @@
 
 #include "../includes/checker.h"
 
+void	error(void)
+{
+	write(2, "Error\n", 6);
+	exit(9);
+}
+
 void	apply_command(t_list **stack_a, t_list **stack_b, char *moves)
 {
 	if (!ft_strncmp(moves, "sa\n", 3))
@@ -36,6 +42,8 @@ void	apply_command(t_list **stack_a, t_list **stack_b, char *moves)
 		pa(stack_a, stack_b, 0);
 	else if (!ft_strncmp(moves, "pb\n", 3))
 		pb(stack_a, stack_b, 0);
+	else
+		error();
 }
 
 int	main(int argc, char **argv)

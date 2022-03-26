@@ -29,7 +29,8 @@ int	pl(t_list **stack_a, t_list **stack_b)
 
 int	pa(t_list **stack_a, t_list **stack_b, int print)
 {
-	pl(stack_a, stack_b);
+	if (*stack_b)
+		pl(stack_a, stack_b);
 	if (print)
 		write(1, "pa\n", 3);
 	return (0);
@@ -37,7 +38,8 @@ int	pa(t_list **stack_a, t_list **stack_b, int print)
 
 int	pb(t_list **stack_a, t_list **stack_b, int print)
 {
-	pl(stack_b, stack_a);
+	if (*stack_a)
+		pl(stack_b, stack_a);
 	if (print)
 		write(1, "pb\n", 3);
 	return (0);

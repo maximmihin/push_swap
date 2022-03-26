@@ -23,7 +23,10 @@ int	main(int argc, char **argv)
 	if (!stack_a)
 		return (0);
 	if (is_ascending(stack_a))
+	{
+		ft_lstclear(&stack_a, free);
 		return (0);
+	}
 	if (argc < 7)
 		small_sort(&stack_a, &stack_b, argc);
 	else

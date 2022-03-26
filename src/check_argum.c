@@ -19,8 +19,10 @@ int	check_non_numeric_symbols(char **str)
 
 	i = 0;
 	j = 0;
-	while (str[i] && str[i][j])
+	while (str[i] != NULL/* && str[i][j]*/)
 	{
+		if (!ft_strlen(str[i]))
+			return (1);
 		while (str[i][j])
 		{
 			if (!(str[i][j] == '-' || ft_isdigit(str[i][j])))
@@ -101,7 +103,7 @@ void	check_argum(char **argv)
 		|| check_double(argv)
 		|| check_max_min_int(argv))
 	{
-		write(2, "error\n", 6);
+		write(2, "Error\n", 6);
 		exit(9);
 	}
 }

@@ -18,12 +18,13 @@ int	sl(t_list **stack)
 	t_list	*s;
 
 	s = *stack;
-	if (!s && !s->next)
-		return (1);
-	tmp = s->next->next;
-	s->next->next = *stack;
-	*stack = s->next;
-	s->next = tmp;
+	if (ft_lstsize(s) > 1)
+	{
+		tmp = s->next->next;
+		s->next->next = *stack;
+		*stack = s->next;
+		s->next = tmp;
+	}
 	return (0);
 }
 

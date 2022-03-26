@@ -64,12 +64,13 @@ int	small_sort(t_list **stack_a, t_list **stack_b, int argc)
 	if (argc == 3)
 		if (((t_node *)list_tmp->content)->content
 			> ((t_node *)list_tmp->next->content)->content)
-			return (sa(&list_tmp, 1));
+			sa(stack_a, 1);
 	if (argc == 4)
-		return (three_sort(&list_tmp));
+		three_sort(stack_a);
 	if (argc == 5)
-		return (four_sort(stack_a, stack_b));
+		four_sort(stack_a, stack_b);
 	if (argc == 6)
-		return (five_sort(stack_a, stack_b));
+		five_sort(stack_a, stack_b);
+	ft_lstclear(stack_a, free);
 	return (0);
 }

@@ -17,10 +17,13 @@ int	rrl(t_list **stack)
 	t_list	*tmp;
 
 	tmp = *stack;
-	while (tmp->next->next)
-		tmp = tmp->next;
-	ft_lstadd_front(stack, tmp->next);
-	tmp->next = NULL;
+	if (ft_lstsize(tmp) > 1)
+	{
+		while (tmp->next->next)
+			tmp = tmp->next;
+		ft_lstadd_front(stack, tmp->next);
+		tmp->next = NULL;
+	}
 	return (0);
 }
 
